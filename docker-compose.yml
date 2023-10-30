@@ -1,0 +1,60 @@
+################################################################################
+# IdC Compose
+################################################################################
+# docker-compose -f docker-compose-.yml up
+################################################################################
+version: "3.8"
+
+services:
+  node-red:
+    image: nodered/node-red:latest
+    container_name: dashboard
+    environment:
+      - TZ=Europe/Portugal
+    ports:
+      - 1880:1880
+    networks:
+      idc-net:
+        ipv4_address: 172.100.10.15
+    volumes:
+      - ./data/node-red-data:/data
+      
+  mosquitto:
+      image: eclipse-mosquitto:latest
+      container_name: mosquitto
+      ports:
+          - 1883:1883
+          - 8883:8883
+          - 9001:9001
+      volumes:
+          - ./data/mosquitto-data/config:/mosquitto/config
+          - ./data/mosquitto-data/data:/mosquitto/data
+          - ./data/mosquitto-data/log:/mosquitto/log
+      networks:
+          idc-net:
+              ipv4_address: 172.100.10.10
+
+  processor:
+      build: 
+        context: ./processor
+        dockerfile: Dockerfile
+      container_name: processor
+      expose:
+        - 8080
+      ports:
+        - "8080:8080"
+      networks:
+          idc-net:
+              ipv4_address: 172.100.10.14
+
+#
+# Add more containers
+#
+
+networks:
+  idc-net:
+      driver: bridge
+      ipam:
+        driver: default
+        config:
+          - subnet: 172.100.10.0/24

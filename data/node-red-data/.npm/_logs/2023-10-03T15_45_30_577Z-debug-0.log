@@ -1,0 +1,113 @@
+0 verbose cli /usr/local/bin/node /usr/local/bin/npm
+1 info using npm@8.19.4
+2 info using node@v16.20.2
+3 timing npm:load:whichnode Completed in 0ms
+4 timing config:load:defaults Completed in 1ms
+5 timing config:load:file:/usr/local/lib/node_modules/npm/npmrc Completed in 0ms
+6 timing config:load:builtin Completed in 0ms
+7 warn config production Use `--omit=dev` instead.
+8 timing config:load:cli Completed in 2ms
+9 timing config:load:env Completed in 1ms
+10 timing config:load:file:/data/.npmrc Completed in 0ms
+11 timing config:load:project Completed in 6ms
+12 timing config:load:file:/usr/src/node-red/.npmrc Completed in 0ms
+13 timing config:load:user Completed in 0ms
+14 timing config:load:file:/usr/local/etc/npmrc Completed in 1ms
+15 timing config:load:global Completed in 1ms
+16 timing config:load:validate Completed in 3ms
+17 timing config:load:credentials Completed in 1ms
+18 timing config:load:setEnvs Completed in 0ms
+19 timing config:load Completed in 16ms
+20 timing npm:load:configload Completed in 16ms
+21 timing npm:load:mkdirpcache Completed in 0ms
+22 timing npm:load:mkdirplogs Completed in 1ms
+23 verbose title npm install node-red-contrib-machine-learning-v2@1.0.9
+24 verbose argv "install" "--no-audit" "--no-update-notifier" "--no-fund" "--save" "--save-prefix" "~" "--production" "--engine-strict" "node-red-contrib-machine-learning-v2@1.0.9"
+25 timing npm:load:setTitle Completed in 1ms
+26 timing config:load:flatten Completed in 2ms
+27 timing npm:load:display Completed in 3ms
+28 verbose logfile logs-max:10 dir:/data/.npm/_logs
+29 verbose logfile /data/.npm/_logs/2023-10-03T15_45_30_577Z-debug-0.log
+30 timing npm:load:logFile Completed in 3ms
+31 timing npm:load:timers Completed in 0ms
+32 timing npm:load:configScope Completed in 0ms
+33 timing npm:load Completed in 25ms
+34 timing arborist:ctor Completed in 0ms
+35 silly logfile start cleaning logs, removing 1 files
+36 silly logfile done cleaning log files
+37 timing idealTree:init Completed in 40ms
+38 timing idealTree:userRequests Completed in 0ms
+39 silly idealTree buildDeps
+40 silly fetch manifest node-red-contrib-machine-learning-v2@1.0.9
+41 timing arborist:ctor Completed in 0ms
+42 http fetch GET 200 https://registry.npmjs.org/node-red-contrib-machine-learning-v2 862ms (cache miss)
+43 silly placeDep ROOT node-red-contrib-machine-learning-v2@1.0.9 OK for: node-red-project@0.0.1 want: 1.0.9
+44 silly fetch manifest child_process@^1.0.2
+45 silly fetch manifest path@^0.12.7
+46 http fetch GET 200 https://registry.npmjs.org/child_process 37ms (cache miss)
+47 http fetch GET 200 https://registry.npmjs.org/path 52ms (cache miss)
+48 timing idealTree:#root Completed in 919ms
+49 silly placeDep ROOT child_process@1.0.2 OK for: node-red-contrib-machine-learning-v2@1.0.9 want: ^1.0.2
+50 silly placeDep ROOT path@0.12.7 OK for: node-red-contrib-machine-learning-v2@1.0.9 want: ^0.12.7
+51 silly fetch manifest process@^0.11.1
+52 silly fetch manifest util@^0.10.3
+53 http fetch GET 200 https://registry.npmjs.org/process 45ms (cache miss)
+54 http fetch GET 200 https://registry.npmjs.org/util 65ms (cache miss)
+55 timing idealTree:node_modules/node-red-contrib-machine-learning-v2 Completed in 68ms
+56 timing idealTree:node_modules/child_process Completed in 0ms
+57 silly placeDep ROOT process@0.11.10 OK for: path@0.12.7 want: ^0.11.1
+58 silly placeDep ROOT util@0.10.4 OK for: path@0.12.7 want: ^0.10.3
+59 silly fetch manifest inherits@2.0.3
+60 http fetch GET 200 https://registry.npmjs.org/inherits 34ms (cache revalidated)
+61 timing idealTree:node_modules/path Completed in 37ms
+62 timing idealTree:node_modules/process Completed in 0ms
+63 silly placeDep node_modules/util inherits@2.0.3 OK for: util@0.10.4 want: 2.0.3
+64 timing idealTree:node_modules/util Completed in 1ms
+65 timing idealTree:node_modules/util/node_modules/inherits Completed in 0ms
+66 timing idealTree:buildDeps Completed in 1026ms
+67 timing idealTree:fixDepFlags Completed in 1ms
+68 timing idealTree Completed in 1071ms
+69 timing reify:loadTrees Completed in 1071ms
+70 timing reify:diffTrees Completed in 2ms
+71 silly reify moves {}
+72 timing reify:retireShallow Completed in 0ms
+73 timing reify:createSparse Completed in 2ms
+74 timing reify:trashOmits Completed in 0ms
+75 timing reify:loadBundles Completed in 0ms
+76 silly tarball no local data for util@https://registry.npmjs.org/util/-/util-0.10.4.tgz. Extracting by manifest.
+77 silly tarball no local data for path@https://registry.npmjs.org/path/-/path-0.12.7.tgz. Extracting by manifest.
+78 silly tarball no local data for node-red-contrib-machine-learning-v2@https://registry.npmjs.org/node-red-contrib-machine-learning-v2/-/node-red-contrib-machine-learning-v2-1.0.9.tgz. Extracting by manifest.
+79 silly tarball no local data for process@https://registry.npmjs.org/process/-/process-0.11.10.tgz. Extracting by manifest.
+80 silly tarball no local data for child_process@https://registry.npmjs.org/child_process/-/child_process-1.0.2.tgz. Extracting by manifest.
+81 silly tarball no local data for inherits@https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz. Extracting by manifest.
+82 http fetch GET 200 https://registry.npmjs.org/path/-/path-0.12.7.tgz 52ms (cache miss)
+83 timing reifyNode:node_modules/path Completed in 58ms
+84 http fetch GET 200 https://registry.npmjs.org/process/-/process-0.11.10.tgz 52ms (cache miss)
+85 timing reifyNode:node_modules/process Completed in 59ms
+86 http fetch GET 200 https://registry.npmjs.org/util/-/util-0.10.4.tgz 54ms (cache miss)
+87 timing reifyNode:node_modules/util Completed in 59ms
+88 http fetch GET 200 https://registry.npmjs.org/inherits/-/inherits-2.0.3.tgz 72ms (cache miss)
+89 timing reifyNode:node_modules/util/node_modules/inherits Completed in 80ms
+90 http fetch GET 200 https://registry.npmjs.org/child_process/-/child_process-1.0.2.tgz 85ms (cache miss)
+91 timing reifyNode:node_modules/child_process Completed in 94ms
+92 http fetch GET 200 https://registry.npmjs.org/node-red-contrib-machine-learning-v2/-/node-red-contrib-machine-learning-v2-1.0.9.tgz 1160ms (cache miss)
+93 timing reifyNode:node_modules/node-red-contrib-machine-learning-v2 Completed in 1166ms
+94 timing reify:unpack Completed in 1166ms
+95 timing reify:unretire Completed in 1ms
+96 timing build:queue Completed in 1ms
+97 timing build:deps Completed in 1ms
+98 timing build Completed in 1ms
+99 timing reify:build Completed in 1ms
+100 timing reify:trash Completed in 0ms
+101 timing reify:save Completed in 12ms
+102 timing reify Completed in 2265ms
+103 silly ADD node_modules/util
+104 silly ADD node_modules/util/node_modules/inherits
+105 silly ADD node_modules/process
+106 silly ADD node_modules/path
+107 silly ADD node_modules/child_process
+108 silly ADD node_modules/node-red-contrib-machine-learning-v2
+109 timing command:install Completed in 2268ms
+110 verbose exit 0
+111 timing npm Completed in 2342ms
+112 info ok

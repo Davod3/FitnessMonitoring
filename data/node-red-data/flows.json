@@ -1,0 +1,377 @@
+[
+    {
+        "id": "f6f2187d.f17ca8",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "037aecdc6926ce9a",
+        "type": "mqtt-broker",
+        "name": "IdC",
+        "broker": "mosquitto",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": "4",
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": false,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthRetain": "false",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closeQos": "0",
+        "closeRetain": "false",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willRetain": "false",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "f5279b01.b328d8",
+        "type": "mqtt-broker",
+        "name": "",
+        "broker": "mosquitto",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": "60",
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "closeTopic": "",
+        "closeQos": "0",
+        "closePayload": "",
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": ""
+    },
+    {
+        "id": "3cc11d24.ff01a2",
+        "type": "comment",
+        "z": "f6f2187d.f17ca8",
+        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
+        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
+        "x": 350,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "85ee7547c83fb2fb",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "966177e57dbd7d21",
+        "type": "mqtt in",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "topic": "idc/iris",
+        "qos": "0",
+        "datatype": "auto-detect",
+        "broker": "037aecdc6926ce9a",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 640,
+        "wires": [
+            [
+                "b5f343a20278eea1"
+            ]
+        ]
+    },
+    {
+        "id": "b5f343a20278eea1",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "Predict Service",
+        "method": "POST",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://app:8000/predict",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 420,
+        "y": 460,
+        "wires": [
+            [
+                "85ee7547c83fb2fb"
+            ]
+        ]
+    },
+    {
+        "id": "79f05988ab6ded28",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "x": 140,
+        "y": 220,
+        "wires": [
+            [
+                "55d85d4957c06c5e"
+            ]
+        ]
+    },
+    {
+        "id": "305b9fa387c77222",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 640,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "55d85d4957c06c5e",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "Health Service",
+        "method": "GET",
+        "ret": "txt",
+        "paytoqs": "ignore",
+        "url": "http://app:8000/health",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 400,
+        "y": 220,
+        "wires": [
+            [
+                "305b9fa387c77222"
+            ]
+        ]
+    },
+    {
+        "id": "bd0817e58c32174a",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Iris-KNN",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"model\":\"iris-KNN\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
+        "payloadType": "json",
+        "x": 140,
+        "y": 580,
+        "wires": [
+            [
+                "b5f343a20278eea1"
+            ]
+        ]
+    },
+    {
+        "id": "15dc23581e715dea",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Iris-GNB",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"model\":\"iris-GNB\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
+        "payloadType": "json",
+        "x": 140,
+        "y": 520,
+        "wires": [
+            [
+                "b5f343a20278eea1"
+            ]
+        ]
+    },
+    {
+        "id": "1b4c1fc9240a787b",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Iris-SVC",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"model\":\"iris-SVC\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
+        "payloadType": "json",
+        "x": 140,
+        "y": 460,
+        "wires": [
+            [
+                "b5f343a20278eea1"
+            ]
+        ]
+    },
+    {
+        "id": "5d7fa6dbca76c986",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Iris-DT",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"model\":\"iris-DT\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
+        "payloadType": "json",
+        "x": 150,
+        "y": 400,
+        "wires": [
+            [
+                "b5f343a20278eea1"
+            ]
+        ]
+    },
+    {
+        "id": "fa76cd47cd404c07",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Iris-LDA",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"model\":\"iris-LDA\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
+        "payloadType": "json",
+        "x": 140,
+        "y": 280,
+        "wires": [
+            [
+                "b5f343a20278eea1"
+            ]
+        ]
+    },
+    {
+        "id": "e2c8d2430fd78714",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "Iris-LR",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "[{\"model\":\"iris-LR\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
+        "payloadType": "json",
+        "x": 150,
+        "y": 340,
+        "wires": [
+            [
+                "b5f343a20278eea1"
+            ]
+        ]
+    }
+]
