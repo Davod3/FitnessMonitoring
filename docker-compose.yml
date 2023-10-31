@@ -46,6 +46,15 @@ services:
       networks:
           idc-net:
               ipv4_address: 172.100.10.14
+  
+  mongodb:
+      image: mongodb/mongodb-community-server:latest
+      container_name: mongodb
+      ports:
+        - "27017:27017"
+      networks:
+          idc-net:
+              ipv4_address: 172.100.10.16
 
 #
 # Add more containers
