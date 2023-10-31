@@ -34,19 +34,6 @@ services:
           idc-net:
               ipv4_address: 172.100.10.10
 
-  processor:
-      build: 
-        context: ./processor
-        dockerfile: Dockerfile
-      container_name: processor
-      expose:
-        - 8080
-      ports:
-        - "8080:8080"
-      networks:
-          idc-net:
-              ipv4_address: 172.100.10.14
-  
   mongodb:
       image: mongodb/mongodb-community-server:latest
       container_name: mongodb
@@ -56,6 +43,21 @@ services:
           idc-net:
               ipv4_address: 172.100.10.16
 
+  processor:
+      build: 
+        context: ./processor
+        dockerfile: Dockerfile
+      container_name: processor
+      expose:
+        - 8080
+      ports:
+        - "8080:8080"
+      depends_on: 
+        - mongodb
+      networks:
+          idc-net:
+              ipv4_address: 172.100.10.14
+  
 #
 # Add more containers
 #
