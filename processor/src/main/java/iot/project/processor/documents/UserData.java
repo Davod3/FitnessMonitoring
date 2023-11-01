@@ -4,6 +4,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Document("userdata")
@@ -11,8 +12,7 @@ public class UserData {
 
     @Id
     private String id;
-    private LocalDate date;
-    private LocalTime time;
+    private LocalDateTime dateTime;
     private int activity;
     private double accelerationX;
     private double accelerationY;
@@ -25,13 +25,12 @@ public class UserData {
         //Empty
     }
 
-    public UserData (String id, LocalDate date, LocalTime time, int activity, double accelerationX,
+    public UserData (String id, LocalDateTime localDateTime, int activity, double accelerationX,
                     double accelerationY, double accelerationZ, double gyroX, double gyroY, double gyroZ ) {
 
 
         this.id = id;
-        this.date = date;
-        this.time = time;
+        this.dateTime = localDateTime;
         this.activity = activity;
         this.accelerationX = accelerationX;
         this.accelerationY = accelerationY;
@@ -50,28 +49,20 @@ public class UserData {
         this.id = id;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalTime getTime() {
-        return time;
-    }
-
-    public void setTime(LocalTime time) {
-        this.time = time;
-    }
-
     public int getActivity() {
         return activity;
     }
 
     public void setActivity(int activity) {
         this.activity = activity;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 
     public double getAccelerationX() {
