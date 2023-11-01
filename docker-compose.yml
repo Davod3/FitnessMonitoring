@@ -44,6 +44,9 @@ services:
               ipv4_address: 172.100.10.16
 
   processor:
+      depends_on: 
+        - mongodb
+        - mosquitto
       build: 
         context: ./processor
         dockerfile: Dockerfile
@@ -52,9 +55,6 @@ services:
         - 8080
       ports:
         - "8080:8080"
-      depends_on: 
-        - mongodb
-        - mosquitto
       networks:
           idc-net:
               ipv4_address: 172.100.10.14

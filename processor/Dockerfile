@@ -10,5 +10,6 @@ EXPOSE 8082
 RUN mkdir -p /app/
 RUN mkdir -p /app/logs/
 COPY --from=builder target/processor-0.0.1-SNAPSHOT.jar /app/app.jar
+COPY training.data .
 EXPOSE 8080
 ENTRYPOINT ["java","-Djava.security.egd=file:/dev/./urandom","-Dspring.profiles.active=container", "-jar", "/app/app.jar"]
