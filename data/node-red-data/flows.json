@@ -2,7 +2,7 @@
     {
         "id": "f6f2187d.f17ca8",
         "type": "tab",
-        "label": "Flow 1",
+        "label": "Dashboard",
         "disabled": false,
         "info": ""
     },
@@ -61,317 +61,750 @@
         "willPayload": ""
     },
     {
-        "id": "3cc11d24.ff01a2",
-        "type": "comment",
+        "id": "54e7288c2ba99b11",
+        "type": "ui_base",
+        "theme": {
+            "name": "theme-light",
+            "lightTheme": {
+                "default": "#0094CE",
+                "baseColor": "#0094CE",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": true,
+                "reset": false
+            },
+            "darkTheme": {
+                "default": "#097479",
+                "baseColor": "#097479",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                "edited": false
+            },
+            "customTheme": {
+                "name": "Untitled Theme 1",
+                "default": "#4B7930",
+                "baseColor": "#4B7930",
+                "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+            },
+            "themeState": {
+                "base-color": {
+                    "default": "#0094CE",
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-titlebar-backgroundColor": {
+                    "value": "#0094CE",
+                    "edited": false
+                },
+                "page-backgroundColor": {
+                    "value": "#fafafa",
+                    "edited": false
+                },
+                "page-sidebar-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-textColor": {
+                    "value": "#1bbfff",
+                    "edited": false
+                },
+                "group-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "group-backgroundColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "widget-textColor": {
+                    "value": "#111111",
+                    "edited": false
+                },
+                "widget-backgroundColor": {
+                    "value": "#0094ce",
+                    "edited": false
+                },
+                "widget-borderColor": {
+                    "value": "#ffffff",
+                    "edited": false
+                },
+                "base-font": {
+                    "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+                }
+            },
+            "angularTheme": {
+                "primary": "indigo",
+                "accents": "blue",
+                "warn": "red",
+                "background": "grey",
+                "palette": "light"
+            }
+        },
+        "site": {
+            "name": "Fitness Monitoring",
+            "hideToolbar": "false",
+            "allowSwipe": "false",
+            "lockMenu": "true",
+            "allowTempTheme": "true",
+            "dateFormat": "DD/MM/YYYY",
+            "sizes": {
+                "sx": 50,
+                "sy": 50,
+                "gx": 6,
+                "gy": 6,
+                "cx": 6,
+                "cy": 6,
+                "px": 0,
+                "py": 0
+            }
+        }
+    },
+    {
+        "id": "a78cb2f860b22a4a",
+        "type": "ui_tab",
+        "name": "History",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "57c0f65a01184402",
+        "type": "ui_tab",
+        "name": "Current Activity",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "d1ab81382855fd4b",
+        "type": "ui_group",
+        "name": "Current Activity",
+        "tab": "57c0f65a01184402",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "eb93e483d1486b31",
+        "type": "ui_spacer",
         "z": "f6f2187d.f17ca8",
-        "name": "WARNING: please check you have started this container with a volume that is mounted to /data\\n otherwise any flow changes are lost when you redeploy or upgrade the container\\n (e.g. upgrade to a more recent node-red docker image).\\n  If you are using named volumes you can ignore this warning.\\n Double click or see info side panel to learn how to start Node-RED in Docker to save your work",
-        "info": "\nTo start docker with a bind mount volume (-v option), for example:\n\n```\ndocker run -it -p 1880:1880 -v /home/user/node_red_data:/data --name mynodered nodered/node-red\n```\n\nwhere `/home/user/node_red_data` is a directory on your host machine where you want to store your flows.\n\nIf you do not do this then you can experiment and redploy flows, but if you restart or upgrade the container the flows will be disconnected and lost. \n\nThey will still exist in a hidden data volume, which can be recovered using standard docker techniques, but that is much more complex than just starting with a named volume as described above.",
-        "x": 350,
+        "name": "spacer",
+        "group": "a33b2b7f897e6143",
+        "order": 3,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "e34fc22e9331f514",
+        "type": "ui_group",
+        "name": "History of Activity",
+        "tab": "a78cb2f860b22a4a",
+        "order": 4,
+        "disp": true,
+        "width": "16",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4ffe8dfa06844b21",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "e34fc22e9331f514",
+        "order": 1,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "218c063930e357b9",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "e34fc22e9331f514",
+        "order": 6,
+        "width": 2,
+        "height": 1
+    },
+    {
+        "id": "300466a754bdcc74",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "e34fc22e9331f514",
+        "order": 8,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "bf1318429630626c",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "e34fc22e9331f514",
+        "order": 10,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "8f37939d24fcb53c",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "e34fc22e9331f514",
+        "order": 12,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "329873c0be912b1a",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "e34fc22e9331f514",
+        "order": 14,
+        "width": 4,
+        "height": 1
+    },
+    {
+        "id": "79b838218f3fe196",
+        "type": "ui_spacer",
+        "z": "f6f2187d.f17ca8",
+        "name": "spacer",
+        "group": "e34fc22e9331f514",
+        "order": 15,
+        "width": 16,
+        "height": 1
+    },
+    {
+        "id": "df924a2577f12739",
+        "type": "ui_chart",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "e34fc22e9331f514",
+        "order": 7,
+        "width": 16,
+        "height": 5,
+        "label": "Data",
+        "chartType": "line",
+        "legend": "true",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Select the date interval to display data!",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 1370,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "268488cf39bea576",
+        "type": "ui_button",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "e34fc22e9331f514",
+        "order": 2,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Duration",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "duration",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "str",
+        "x": 100,
         "y": 80,
-        "wires": []
+        "wires": [
+            [
+                "4cf8b5862d51c0a1"
+            ]
+        ]
     },
     {
-        "id": "85ee7547c83fb2fb",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "debug 1",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 640,
-        "y": 460,
-        "wires": []
-    },
-    {
-        "id": "966177e57dbd7d21",
-        "type": "mqtt in",
+        "id": "d69393651836928f",
+        "type": "ui_button",
         "z": "f6f2187d.f17ca8",
         "name": "",
-        "topic": "idc/iris",
-        "qos": "0",
-        "datatype": "auto-detect",
-        "broker": "037aecdc6926ce9a",
-        "nl": false,
-        "rap": true,
-        "rh": 0,
-        "inputs": 0,
-        "x": 150,
-        "y": 640,
+        "group": "e34fc22e9331f514",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Distance",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "distance",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 120,
         "wires": [
             [
-                "b5f343a20278eea1"
+                "4cf8b5862d51c0a1"
             ]
         ]
     },
     {
-        "id": "b5f343a20278eea1",
-        "type": "http request",
-        "z": "f6f2187d.f17ca8",
-        "name": "Predict Service",
-        "method": "POST",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "http://app:8000/predict",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 420,
-        "y": 460,
-        "wires": [
-            [
-                "85ee7547c83fb2fb"
-            ]
-        ]
-    },
-    {
-        "id": "79f05988ab6ded28",
-        "type": "inject",
+        "id": "86295fa9eb8de15a",
+        "type": "ui_button",
         "z": "f6f2187d.f17ca8",
         "name": "",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "",
-        "payloadType": "date",
-        "x": 140,
-        "y": 220,
+        "group": "e34fc22e9331f514",
+        "order": 4,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Calories",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "calories",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 100,
+        "y": 160,
         "wires": [
             [
-                "55d85d4957c06c5e"
+                "4cf8b5862d51c0a1"
             ]
         ]
     },
     {
-        "id": "305b9fa387c77222",
-        "type": "debug",
+        "id": "49b7c6071c03ba55",
+        "type": "ui_button",
         "z": "f6f2187d.f17ca8",
-        "name": "debug 3",
-        "active": true,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "false",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 640,
-        "y": 220,
-        "wires": []
-    },
-    {
-        "id": "55d85d4957c06c5e",
-        "type": "http request",
-        "z": "f6f2187d.f17ca8",
-        "name": "Health Service",
-        "method": "GET",
-        "ret": "txt",
-        "paytoqs": "ignore",
-        "url": "http://app:8000/health",
-        "tls": "",
-        "persist": false,
-        "proxy": "",
-        "insecureHTTPParser": false,
-        "authType": "",
-        "senderr": false,
-        "headers": [],
-        "x": 400,
-        "y": 220,
+        "name": "",
+        "group": "e34fc22e9331f514",
+        "order": 5,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "Activity Level",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "activity_level",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 110,
+        "y": 200,
         "wires": [
             [
-                "305b9fa387c77222"
+                "4cf8b5862d51c0a1"
             ]
         ]
     },
     {
-        "id": "bd0817e58c32174a",
-        "type": "inject",
+        "id": "d476583791edad7f",
+        "type": "ui_button",
         "z": "f6f2187d.f17ca8",
-        "name": "Iris-KNN",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"model\":\"iris-KNN\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
-        "payloadType": "json",
-        "x": 140,
-        "y": 580,
-        "wires": [
-            [
-                "b5f343a20278eea1"
-            ]
-        ]
-    },
-    {
-        "id": "15dc23581e715dea",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "Iris-GNB",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"model\":\"iris-GNB\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
-        "payloadType": "json",
-        "x": 140,
-        "y": 520,
-        "wires": [
-            [
-                "b5f343a20278eea1"
-            ]
-        ]
-    },
-    {
-        "id": "1b4c1fc9240a787b",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "Iris-SVC",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"model\":\"iris-SVC\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
-        "payloadType": "json",
-        "x": 140,
-        "y": 460,
-        "wires": [
-            [
-                "b5f343a20278eea1"
-            ]
-        ]
-    },
-    {
-        "id": "5d7fa6dbca76c986",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "Iris-DT",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"model\":\"iris-DT\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
-        "payloadType": "json",
-        "x": 150,
-        "y": 400,
-        "wires": [
-            [
-                "b5f343a20278eea1"
-            ]
-        ]
-    },
-    {
-        "id": "fa76cd47cd404c07",
-        "type": "inject",
-        "z": "f6f2187d.f17ca8",
-        "name": "Iris-LDA",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"model\":\"iris-LDA\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
-        "payloadType": "json",
-        "x": 140,
+        "name": "",
+        "group": "e34fc22e9331f514",
+        "order": 9,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Day",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "day",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
         "y": 280,
         "wires": [
             [
-                "b5f343a20278eea1"
+                "8977936e467c8338"
             ]
         ]
     },
     {
-        "id": "e2c8d2430fd78714",
-        "type": "inject",
+        "id": "0bd98bf2c8500038",
+        "type": "ui_button",
         "z": "f6f2187d.f17ca8",
-        "name": "Iris-LR",
-        "props": [
-            {
-                "p": "payload"
-            },
-            {
-                "p": "topic",
-                "vt": "str"
-            }
-        ],
-        "repeat": "",
-        "crontab": "",
-        "once": false,
-        "onceDelay": 0.1,
-        "topic": "",
-        "payload": "[{\"model\":\"iris-LR\"},{\"SepalLengthCm\":5.9,\"SepalWidthCm\":3,\"PetalLengthCm\":5.1,\"PetalWidthCm\":1}]",
-        "payloadType": "json",
-        "x": 150,
-        "y": 340,
+        "name": "",
+        "group": "e34fc22e9331f514",
+        "order": 11,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Week",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "week",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 320,
         "wires": [
             [
-                "b5f343a20278eea1"
+                "8977936e467c8338"
             ]
         ]
+    },
+    {
+        "id": "2f49448bea76445e",
+        "type": "ui_button",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "e34fc22e9331f514",
+        "order": 13,
+        "width": 2,
+        "height": 1,
+        "passthru": false,
+        "label": "Month",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "month",
+        "payloadType": "str",
+        "topic": "topic",
+        "topicType": "msg",
+        "x": 90,
+        "y": 360,
+        "wires": [
+            [
+                "8977936e467c8338"
+            ]
+        ]
+    },
+    {
+        "id": "51a148835b1205a6",
+        "type": "ui_form",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "label": "",
+        "group": "e34fc22e9331f514",
+        "order": 23,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Start Date",
+                "value": "start_date",
+                "type": "date",
+                "required": true,
+                "rows": null
+            },
+            {
+                "label": "End Date",
+                "value": "end_date",
+                "type": "date",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "start_date": "",
+            "end_date": ""
+        },
+        "payload": "",
+        "submit": "Search",
+        "cancel": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": true,
+        "className": "",
+        "x": 90,
+        "y": 460,
+        "wires": [
+            [
+                "ee104bc00a538728"
+            ]
+        ]
+    },
+    {
+        "id": "5fda28e5e98eb732",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "d1ab81382855fd4b",
+        "order": 16,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Current Activity: ",
+        "format": "Walking",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 300,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "0ec93cb818058c99",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "d1ab81382855fd4b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Activity Level",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 290,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "fc88a607928f1d2c",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://localhost:3000/data",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1050,
+        "y": 380,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "4cf8b5862d51c0a1",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "dataType",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 410,
+        "y": 240,
+        "wires": [
+            [
+                "ad6a3cb3572288bf"
+            ]
+        ]
+    },
+    {
+        "id": "8977936e467c8338",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "period",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 400,
+        "y": 300,
+        "wires": [
+            [
+                "ad6a3cb3572288bf"
+            ]
+        ]
+    },
+    {
+        "id": "ee104bc00a538728",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "set start & end dates",
+        "rules": [
+            {
+                "t": "set",
+                "p": "start_date",
+                "pt": "flow",
+                "to": "payload.start_date",
+                "tot": "msg",
+                "dc": true
+            },
+            {
+                "t": "set",
+                "p": "end_date",
+                "pt": "flow",
+                "to": "payload.end_date",
+                "tot": "msg",
+                "dc": true
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 420,
+        "y": 360,
+        "wires": [
+            [
+                "ad6a3cb3572288bf"
+            ]
+        ]
+    },
+    {
+        "id": "ad6a3cb3572288bf",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "CreateRequest",
+        "func": "var dataType = flow.get('dataType');\nvar dataPeriod = flow.get('period');\nvar end_date = flow.get('end_date');\nvar start_date = flow.get('start_date');\n\nvar isValid = true;\n\nif(dataType === undefined) {\n    dataType = 'duration';\n}\n\nif(dataPeriod === undefined) {\n    dataPeriod = 'day';\n}\n\nif(start_date === undefined || end_date === undefined) {\n    isValid = false;\n    return {payload : null};\n}\n\n//Handle start data after end data\n\nvar newMsg = {\n    payload : {\n        dataType : dataType,\n        dataPeriod : dataPeriod,\n        start_date : start_date,\n        end_date : end_date\n    }\n};\n\n\nreturn newMsg; //newMsg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 680,
+        "y": 300,
+        "wires": [
+            [
+                "2f6a671a6a3be3c6"
+            ]
+        ]
+    },
+    {
+        "id": "42658e4f0486cbc1",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "isNull",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1030,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "2f6a671a6a3be3c6",
+        "type": "switch",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "null"
+            },
+            {
+                "t": "nnull"
+            }
+        ],
+        "checkall": "false",
+        "repair": false,
+        "outputs": 2,
+        "x": 870,
+        "y": 300,
+        "wires": [
+            [
+                "42658e4f0486cbc1"
+            ],
+            [
+                "fc88a607928f1d2c",
+                "c0bc66eb40920bfe"
+            ]
+        ]
+    },
+    {
+        "id": "c0bc66eb40920bfe",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Created Request",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1090,
+        "y": 200,
+        "wires": []
     }
 ]
