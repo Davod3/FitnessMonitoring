@@ -315,8 +315,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 790,
-        "y": 440,
+        "x": 1390,
+        "y": 280,
         "wires": [
             []
         ]
@@ -615,11 +615,11 @@
         "id": "fc88a607928f1d2c",
         "type": "http request",
         "z": "f6f2187d.f17ca8",
-        "name": "",
-        "method": "GET",
+        "name": "Fetch Data",
+        "method": "POST",
         "ret": "obj",
         "paytoqs": "body",
-        "url": "http://localhost:3000/data",
+        "url": "http://172.100.10.14:8080/data",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -627,10 +627,12 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1050,
-        "y": 340,
+        "x": 1030,
+        "y": 400,
         "wires": [
-            []
+            [
+                "24a77358085c8c36"
+            ]
         ]
     },
     {
@@ -747,16 +749,17 @@
         "id": "42658e4f0486cbc1",
         "type": "debug",
         "z": "f6f2187d.f17ca8",
-        "name": "debug 1",
+        "name": "isNull",
         "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
-        "complete": "false",
+        "complete": "payload",
+        "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1040,
-        "y": 260,
+        "x": 1030,
+        "y": 140,
         "wires": []
     },
     {
@@ -784,8 +787,43 @@
                 "42658e4f0486cbc1"
             ],
             [
-                "fc88a607928f1d2c"
+                "fc88a607928f1d2c",
+                "c0bc66eb40920bfe"
             ]
         ]
+    },
+    {
+        "id": "c0bc66eb40920bfe",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Created Request",
+        "active": false,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1090,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "24a77358085c8c36",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "Response",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 1320,
+        "y": 400,
+        "wires": []
     }
 ]
