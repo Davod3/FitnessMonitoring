@@ -631,7 +631,7 @@
         "y": 400,
         "wires": [
             [
-                "24a77358085c8c36"
+                "20e2124887c2d9ae"
             ]
         ]
     },
@@ -822,8 +822,29 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1320,
+        "x": 1400,
         "y": 400,
         "wires": []
+    },
+    {
+        "id": "20e2124887c2d9ae",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "ParseRequest",
+        "func": "\nvar newMsg = {payload : [msg.payload]};\n\nreturn newMsg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 1220,
+        "y": 320,
+        "wires": [
+            [
+                "24a77358085c8c36",
+                "df924a2577f12739"
+            ]
+        ]
     }
 ]
