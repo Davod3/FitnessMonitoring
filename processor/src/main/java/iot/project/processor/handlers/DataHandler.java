@@ -87,4 +87,39 @@ public class DataHandler {
 
     }
 
+    public void fetchDurationByDay() {
+    }
+
+    public void fetchDurationByWeek() {
+    }
+
+    public void fetchDurationByMonth() {
+    }
+
+    public void fetchCaloriesByDay() {
+    }
+
+    public void fetchCaloriesByWeek() {
+    }
+
+    public void fetchCaloriesByMonth() {
+    }
+
+    public void fetchDistanceByDay() {
+    }
+
+    public void fetchDistanceByWeek() {
+    }
+
+    public void fetchDistanceByMonth() {
+    }
+
+    public void fetchActivityLevelByDay() {
+    }
+
+    public void fetchActivityLevelByWeek() {
+    }
+
+    public void fetchActivityLevelByMonth() {
+    }
 }
