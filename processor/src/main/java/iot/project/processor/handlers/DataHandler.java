@@ -2,7 +2,6 @@ package iot.project.processor.handlers;
 
 import iot.project.processor.documents.UserData;
 import iot.project.processor.repositories.UserDataRepository;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
@@ -18,12 +17,13 @@ import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
 
 @Component
 public class DataHandler {
 
     private static final String TRAINING_DATA = "training.data";
-    private static final String TRAINING_COLLECTION = "training_data";
+    private static final String USER_DATA = "user_data";
 
     @Autowired
     private UserDataRepository userDataRepo;
@@ -36,7 +36,7 @@ public class DataHandler {
 
         //Check if training data is initialized
 
-        if(!mongoTemplate.collectionExists(TRAINING_COLLECTION)) {
+        if(!mongoTemplate.collectionExists(USER_DATA)) {
 
             File file = new File(TRAINING_DATA);
 
@@ -52,7 +52,7 @@ public class DataHandler {
             //Skip header line
             try {
                 UserData data = dataParser(line);
-                this.mongoTemplate.save(data, TRAINING_COLLECTION);
+                this.mongoTemplate.save(data, USER_DATA);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -87,7 +87,28 @@ public class DataHandler {
 
     }
 
-    public void fetchDurationByDay() {
+    public void fetchDurationByDay(LocalDateTime startDate, LocalDateTime endDate) {
+
+        //Get all data from db between these 2 days
+
+        //Date start = Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant());
+        //Date end = Date.from(endDate.atZone(ZoneId.systemDefault()).toInstant());
+
+        System.out.println(startDate.toString() + "---" + endDate.toString());
+
+        List<UserData> results = this.userDataRepo.findBetweenStartEnd(startDate, endDate);
+
+        System.out.println(results.size());
+
+        //For each entry, get date
+            //If date is found for first time:
+                //Initialize duration counter at 0.
+                //Store the date and the epoch timestamp
+            //If date is already found:
+                //Subtract current timestamp from stored timestamp.
+                //Increment duration counter with the result.
+                //Update stored timestamp
+
     }
 
     public void fetchDurationByWeek() {

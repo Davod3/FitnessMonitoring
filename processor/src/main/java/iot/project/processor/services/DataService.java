@@ -8,6 +8,13 @@ import iot.project.processor.handlers.DataHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -18,17 +25,17 @@ public class DataService {
 
     public DataResponseDTO fetchData(DataRequestDTO request) {
 
-        System.out.println(request.getStart_date());
-        System.out.println(request.getEnd_date());
-
         String dataType = request.getDataType();
         String dataPeriod = request.getDataPeriod();
+
+        LocalDateTime parsedStartDate = parseDate(request.getStart_date());
+        LocalDateTime parsedEndDate = parseDate(request.getEnd_date());
 
         if(dataType.equalsIgnoreCase(DataType.DURATION.toString())) {
 
                 if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                    this.dataHandler.fetchDurationByDay();
+                    this.dataHandler.fetchDurationByDay(parsedStartDate, parsedEndDate);
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
@@ -112,6 +119,10 @@ public class DataService {
         DataResponseDTO response = new DataResponseDTO(series, data, labels);
 
         return response;
+    }
+
+    private LocalDateTime parseDate(String dateString) {
+        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
     }
 
 }
