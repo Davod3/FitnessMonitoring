@@ -1,8 +1,10 @@
 package iot.project.processor.handlers;
 
 import iot.project.processor.documents.UserData;
+import iot.project.processor.dtos.DataResponseDTO;
 import iot.project.processor.repositories.UserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cglib.core.Local;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
@@ -11,13 +13,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.ZoneId;
+import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Component
 public class DataHandler {
@@ -87,27 +85,84 @@ public class DataHandler {
 
     }
 
-    public void fetchDurationByDay(LocalDateTime startDate, LocalDateTime endDate) {
+    public DataResponseDTO fetchDurationByDay(LocalDateTime startDate, LocalDateTime endDate) {
+
+        Map<LocalDate, Long> durationPerDayWalking = new HashMap<>();
+        Map<LocalDate, Long> durationPerDayRunning = new HashMap<>();
+
+        Map<LocalDate, Long> previousTimestampPerDay = new HashMap<>();
 
         //Get all data from db between these 2 days
+        this.userDataRepo.findBetweenStartEnd(startDate, endDate).stream().forEach( data -> {
 
-        //Date start = Date.from(startDate.atZone(ZoneId.systemDefault()).toInstant());
-        //Date end = Date.from(endDate.atZone(ZoneId.systemDefault()).toInstant());
+            LocalDateTime dateTime = data.getDateTime();
+            LocalDate date = dateTime.toLocalDate();
 
-        System.out.println(startDate.toString() + "---" + endDate.toString());
+            if(!previousTimestampPerDay.containsKey(date)){
 
-        List<UserData> results = this.userDataRepo.findBetweenStartEnd(startDate, endDate);
+                //If date is found for first time:
+                durationPerDayWalking.put(date, 0L);
+                durationPerDayRunning.put(date, 0L);
+                previousTimestampPerDay.put(date, dateTime.atZone(ZoneId.systemDefault()).toEpochSecond());
 
-        System.out.println(results.size());
+            } else {
 
-        //For each entry, get date
-            //If date is found for first time:
-                //Initialize duration counter at 0.
-                //Store the date and the epoch timestamp
-            //If date is already found:
-                //Subtract current timestamp from stored timestamp.
-                //Increment duration counter with the result.
-                //Update stored timestamp
+                //If date is already found:
+                Long currentTimestamp = dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
+                Long storedTimestamp = previousTimestampPerDay.get(date);
+
+                Long duration = currentTimestamp - storedTimestamp;
+
+                if(data.getActivity() == 0) {
+                    //Walking
+
+                    Long storedDuration = durationPerDayWalking.get(date);
+                    durationPerDayWalking.replace(date, storedDuration + duration);
+
+                } else {
+
+                    //Running
+                    Long storedDuration = durationPerDayRunning.get(date);
+                    durationPerDayRunning.replace(date, storedDuration + duration);
+
+                }
+
+                previousTimestampPerDay.replace(date, currentTimestamp);
+
+            }
+
+        });
+
+        List<String> series = new LinkedList<>();
+
+        series.add("Running");
+        series.add("Walking");
+
+        List<String> runningDurations = new LinkedList<>();
+
+        for(long l : durationPerDayRunning.values()) {
+            runningDurations.add(Long.toString(l));
+        }
+
+        List<String> walkingDurations = new LinkedList<>();
+
+        for(long l : durationPerDayWalking.values()) {
+            walkingDurations.add(Long.toString(l));
+        }
+
+        List<String[]> data = new LinkedList<>();
+
+        data.add(runningDurations.toArray(new String[0]));
+        data.add(walkingDurations.toArray(new String[0]));
+
+        List<String> labels = new LinkedList<>();
+
+        for(LocalDate ld : durationPerDayRunning.keySet()){
+
+            labels.add(ld.toString());
+        }
+
+        return new DataResponseDTO(series, data, labels);
 
     }
 

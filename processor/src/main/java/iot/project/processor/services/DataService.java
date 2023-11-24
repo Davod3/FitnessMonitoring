@@ -35,7 +35,7 @@ public class DataService {
 
                 if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                    this.dataHandler.fetchDurationByDay(parsedStartDate, parsedEndDate);
+                    return this.dataHandler.fetchDurationByDay(parsedStartDate, parsedEndDate);
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
@@ -97,28 +97,7 @@ public class DataService {
 
         }
 
-
-        String[] data1 = {"5", "6"};
-        String[] data2 = {"8", "2"};
-
-        List<String> series = new LinkedList<>();
-
-        series.add("Running");
-        series.add("Walking");
-
-        List<String[]> data = new LinkedList<>();
-
-        data.add(data1);
-        data.add(data2);
-
-        List<String> labels = new LinkedList<>();
-
-        labels.add("Janeiro");
-        labels.add("Fevereiro");
-
-        DataResponseDTO response = new DataResponseDTO(series, data, labels);
-
-        return response;
+        return null;
     }
 
     private LocalDateTime parseDate(String dateString) {
