@@ -1,6 +1,7 @@
 package iot.project.processor.handlers;
 
 import iot.project.processor.documents.UserData;
+import iot.project.processor.dtos.DataResponse;
 import iot.project.processor.dtos.DataResponseDTO;
 import iot.project.processor.repositories.UserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,7 +86,7 @@ public class DataHandler {
 
     }
 
-    public DataResponseDTO fetchDurationByDay(LocalDateTime startDate, LocalDateTime endDate) {
+    public DataResponse<LocalDate, Long> fetchDurationByDay(LocalDateTime startDate, LocalDateTime endDate) {
 
         Map<LocalDate, Long> durationPerDayWalking = new HashMap<>();
         Map<LocalDate, Long> durationPerDayRunning = new HashMap<>();
@@ -133,36 +134,7 @@ public class DataHandler {
 
         });
 
-        List<String> series = new LinkedList<>();
-
-        series.add("Running");
-        series.add("Walking");
-
-        List<String> runningDurations = new LinkedList<>();
-
-        for(long l : durationPerDayRunning.values()) {
-            runningDurations.add(Long.toString(l));
-        }
-
-        List<String> walkingDurations = new LinkedList<>();
-
-        for(long l : durationPerDayWalking.values()) {
-            walkingDurations.add(Long.toString(l));
-        }
-
-        List<String[]> data = new LinkedList<>();
-
-        data.add(runningDurations.toArray(new String[0]));
-        data.add(walkingDurations.toArray(new String[0]));
-
-        List<String> labels = new LinkedList<>();
-
-        for(LocalDate ld : durationPerDayRunning.keySet()){
-
-            labels.add(ld.toString());
-        }
-
-        return new DataResponseDTO(series, data, labels);
+        return new DataResponse<LocalDate, Long>(durationPerDayRunning, durationPerDayWalking);
 
     }
 

@@ -1,9 +1,6 @@
 package iot.project.processor.services;
 
-import iot.project.processor.dtos.DataPeriod;
-import iot.project.processor.dtos.DataRequestDTO;
-import iot.project.processor.dtos.DataResponseDTO;
-import iot.project.processor.dtos.DataType;
+import iot.project.processor.dtos.*;
 import iot.project.processor.handlers.DataHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -17,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 @Component
 public class DataService {
@@ -35,7 +33,9 @@ public class DataService {
 
                 if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                    return this.dataHandler.fetchDurationByDay(parsedStartDate, parsedEndDate);
+                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
+                            parsedEndDate);
+                    return dtofy(r.getRunningData(), r.getWalkingData());
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
@@ -98,6 +98,41 @@ public class DataService {
         }
 
         return null;
+    }
+
+    private <T,O> DataResponseDTO dtofy(Map<T, O> runningData, Map<T, O> walkingData) {
+
+        List<String> series = new LinkedList<>();
+
+        series.add("Running");
+        series.add("Walking");
+
+        List<String> runningDurations = new LinkedList<>();
+
+        for(O o : runningData.values()) {
+            runningDurations.add(o.toString());
+        }
+
+        List<String> walkingDurations = new LinkedList<>();
+
+        for(O o : walkingData.values()) {
+            walkingDurations.add(o.toString());
+        }
+
+        List<String[]> data = new LinkedList<>();
+
+        data.add(runningDurations.toArray(new String[0]));
+        data.add(walkingDurations.toArray(new String[0]));
+
+        List<String> labels = new LinkedList<>();
+
+        for(T t : runningData.keySet()){
+
+            labels.add(t.toString());
+        }
+
+        return new DataResponseDTO(series, data, labels);
+
     }
 
     private LocalDateTime parseDate(String dateString) {

@@ -287,7 +287,7 @@
         "width": 16,
         "height": 5,
         "label": "Data",
-        "chartType": "bar",
+        "chartType": "line",
         "legend": "true",
         "xformat": "HH:mm:ss",
         "interpolate": "linear",
@@ -303,8 +303,8 @@
         "useUTC": false,
         "colors": [
             "#1f77b4",
-            "#aec7e8",
             "#ff7f0e",
+            "#b30fff",
             "#2ca02c",
             "#98df8a",
             "#d62728",
@@ -631,7 +631,6 @@
         "y": 400,
         "wires": [
             [
-                "24a77358085c8c36",
                 "20e2124887c2d9ae"
             ]
         ]
