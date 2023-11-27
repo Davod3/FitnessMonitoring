@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Component
@@ -134,6 +135,8 @@ public class DataHandler {
 
         });
 
+        System.out.println(Arrays.toString(durationPerDayRunning.keySet().toArray()));
+
         return new DataResponse<LocalDate, Long>(durationPerDayRunning, durationPerDayWalking);
 
     }
@@ -141,7 +144,52 @@ public class DataHandler {
     public void fetchDurationByWeek() {
     }
 
-    public void fetchDurationByMonth() {
+    public DataResponse<String, Long> fetchDurationByMonth(LocalDateTime startDate, LocalDateTime endDate) {
+
+        Map<String, Long> durationPerDayWalking = new HashMap<>();
+        Map<String, Long> durationPerDayRunning = new HashMap<>();
+
+        List<Month> monthsBetween = getMonthsBetween(startDate, endDate);
+        LocalDateTime start = startDate;
+        LocalDateTime end;
+
+        for(Month m : monthsBetween) {
+
+            YearMonth yearMonth = YearMonth.of(start.getYear(), m.getValue());
+            LocalDate endOfMonth = yearMonth.atEndOfMonth();
+
+            if(endOfMonth.atStartOfDay().isAfter(endDate)) {
+                end = endDate;
+            } else {
+                end = endOfMonth.atStartOfDay();
+            }
+
+            System.out.println("Fetching " + m.toString() + ": " + start.toString() + " - " + end.toString());
+
+            DataResponse<LocalDate, Long> durationPerDay = fetchDurationByDay(start, end);
+
+            long totalRunning = 0;
+
+            for(long l : durationPerDay.getRunningData().values()) {
+                totalRunning+=l;
+            }
+
+            long totalWalking = 0;
+
+            for(long l : durationPerDay.getWalkingData().values()) {
+                totalWalking+=l;
+            }
+
+            durationPerDayRunning.put(m.toString(), totalRunning);
+
+            durationPerDayWalking.put(m.toString(),totalWalking);
+
+            start = endOfMonth.plusDays(1).atStartOfDay();
+
+        }
+
+        return new DataResponse<String, Long>(durationPerDayRunning, durationPerDayWalking);
+
     }
 
     public void fetchCaloriesByDay() {
@@ -169,5 +217,17 @@ public class DataHandler {
     }
 
     public void fetchActivityLevelByMonth() {
+    }
+
+    private static List<Month> getMonthsBetween(LocalDateTime startDate, LocalDateTime endDate) {
+        List<Month> monthsBetween = new ArrayList<>();
+        LocalDateTime currentMonth = startDate;
+
+        while (!currentMonth.isAfter(endDate)) {
+            monthsBetween.add(currentMonth.getMonth());
+            currentMonth = currentMonth.plusMonths(1);
+        }
+
+        return monthsBetween;
     }
 }

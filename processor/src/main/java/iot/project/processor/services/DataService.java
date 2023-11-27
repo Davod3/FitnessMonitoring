@@ -43,7 +43,9 @@ public class DataService {
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-                    this.dataHandler.fetchDurationByMonth();
+                   DataResponse<String, Long> r = this.dataHandler.fetchDurationByMonth(parsedStartDate,
+                           parsedEndDate);
+                   return dtofy(r.getRunningData(), r.getWalkingData());
 
                 }
 
