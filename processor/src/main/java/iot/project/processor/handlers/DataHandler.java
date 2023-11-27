@@ -1,11 +1,10 @@
 package iot.project.processor.handlers;
 
+import iot.project.processor.documents.ProcessedUserData;
 import iot.project.processor.documents.UserData;
 import iot.project.processor.dtos.DataResponse;
-import iot.project.processor.dtos.DataResponseDTO;
-import iot.project.processor.repositories.UserDataRepository;
+import iot.project.processor.repositories.SavedUserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,17 +15,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Component
 public class DataHandler {
 
     private static final String TRAINING_DATA = "training.data";
-    private static final String USER_DATA = "user_data";
+    private static final String USER_DATA = "processed_user_data";
+    private static final String RAW_USER_DATA = "raw_user_data";
 
     @Autowired
-    private UserDataRepository userDataRepo;
+    private SavedUserDataRepository userDataRepo;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -52,13 +51,56 @@ public class DataHandler {
             //Skip header line
             try {
                 UserData data = dataParser(line);
-                this.mongoTemplate.save(data, USER_DATA);
+                this.mongoTemplate.save(data, RAW_USER_DATA);
+                computeAndSave(data);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
 
 
         }
+
+    }
+
+    private void computeAndSave(UserData data) {
+
+        ProcessedUserData savedData = this.userDataRepo.findByDate(data.getDateTime().toLocalDate());
+
+        if(savedData != null) {
+
+            long oldTimestamp = savedData.getLastTimestamp();
+            long newTimestamp = data.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond();
+            long activityDuration = newTimestamp - oldTimestamp;
+
+            savedData.setLastTimestamp(newTimestamp);
+
+            if(data.getActivity() == 0) {
+
+                //Walking
+                long oldWalkingDuration = savedData.getWalkingDuration();
+                savedData.setWalkingDuration(oldWalkingDuration + activityDuration);
+
+            } else {
+
+                //Running
+                long oldRunningDuration = savedData.getRunningDuration();
+                savedData.setRunningDuration(oldRunningDuration + activityDuration);
+            }
+
+
+        } else {
+
+            //Date found for the first time
+            savedData = new ProcessedUserData();
+            savedData.setDate(data.getDateTime().toLocalDate());
+            savedData.setRunningDuration(0);
+            savedData.setWalkingDuration(0);
+            savedData.setLastTimestamp(data.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond());
+
+        }
+
+        this.userDataRepo.save(savedData);
+
 
     }
 
@@ -87,7 +129,7 @@ public class DataHandler {
 
     }
 
-    public DataResponse<LocalDate, Long> fetchDurationByDay(LocalDateTime startDate, LocalDateTime endDate) {
+    public DataResponse<LocalDate, Long> fetchDurationByDay(LocalDate startDate, LocalDate endDate) {
 
         Map<LocalDate, Long> durationPerDayWalking = new HashMap<>();
         Map<LocalDate, Long> durationPerDayRunning = new HashMap<>();
@@ -97,8 +139,9 @@ public class DataHandler {
         //Get all data from db between these 2 days
         this.userDataRepo.findBetweenStartEnd(startDate, endDate).stream().forEach( data -> {
 
-            LocalDateTime dateTime = data.getDateTime();
-            LocalDate date = dateTime.toLocalDate();
+            /*
+
+            LocalDate date = data.getDate();
 
             if(!previousTimestampPerDay.containsKey(date)){
 
@@ -133,6 +176,8 @@ public class DataHandler {
 
             }
 
+             */
+
         });
 
         System.out.println(Arrays.toString(durationPerDayRunning.keySet().toArray()));
@@ -150,8 +195,8 @@ public class DataHandler {
         Map<String, Long> durationPerDayRunning = new HashMap<>();
 
         List<Month> monthsBetween = getMonthsBetween(startDate, endDate);
-        LocalDateTime start = startDate;
-        LocalDateTime end;
+        LocalDate start = startDate.toLocalDate();
+        LocalDate end;
 
         for(Month m : monthsBetween) {
 
@@ -159,9 +204,9 @@ public class DataHandler {
             LocalDate endOfMonth = yearMonth.atEndOfMonth();
 
             if(endOfMonth.atStartOfDay().isAfter(endDate)) {
-                end = endDate;
+                end = endDate.toLocalDate();
             } else {
-                end = endOfMonth.atStartOfDay();
+                end = endOfMonth;
             }
 
             System.out.println("Fetching " + m.toString() + ": " + start.toString() + " - " + end.toString());
@@ -184,7 +229,7 @@ public class DataHandler {
 
             durationPerDayWalking.put(m.toString(),totalWalking);
 
-            start = endOfMonth.plusDays(1).atStartOfDay();
+            start = endOfMonth.plusDays(1);
 
         }
 

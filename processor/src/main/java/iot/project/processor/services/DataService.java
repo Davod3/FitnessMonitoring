@@ -33,8 +33,8 @@ public class DataService {
 
                 if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
-                            parsedEndDate);
+                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate.toLocalDate(),
+                            parsedEndDate.toLocalDate());
                     return dtofy(r.getRunningData(), r.getWalkingData());
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {

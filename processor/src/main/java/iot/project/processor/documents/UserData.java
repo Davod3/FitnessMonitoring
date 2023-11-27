@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
 
-@Document("user_data")
+@Document("raw_user_data")
 public class UserData {
 
     @Id
@@ -27,7 +27,6 @@ public class UserData {
                     double accelerationY, double accelerationZ, double gyroX, double gyroY, double gyroZ ) {
 
 
-        this.id = id;
         this.dateTime = localDateTime;
         this.activity = activity;
         this.accelerationX = accelerationX;
