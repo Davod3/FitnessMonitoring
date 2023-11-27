@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface SavedUserDataRepository extends MongoRepository<ProcessedUserData, String> {
 
-    @Query("{'dateTime' : { $gte: ?0, $lte: ?1 } }")
+    @Query("{'date' : { $gte: ?0, $lte: ?1 } }")
     public List<ProcessedUserData> findBetweenStartEnd(LocalDate startDate, LocalDate endDate);
 
     public ProcessedUserData findByDate(LocalDate date);

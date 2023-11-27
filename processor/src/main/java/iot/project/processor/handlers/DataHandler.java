@@ -134,53 +134,15 @@ public class DataHandler {
         Map<LocalDate, Long> durationPerDayWalking = new HashMap<>();
         Map<LocalDate, Long> durationPerDayRunning = new HashMap<>();
 
-        Map<LocalDate, Long> previousTimestampPerDay = new HashMap<>();
 
         //Get all data from db between these 2 days
         this.userDataRepo.findBetweenStartEnd(startDate, endDate).stream().forEach( data -> {
 
-            /*
-
-            LocalDate date = data.getDate();
-
-            if(!previousTimestampPerDay.containsKey(date)){
-
-                //If date is found for first time:
-                durationPerDayWalking.put(date, 0L);
-                durationPerDayRunning.put(date, 0L);
-                previousTimestampPerDay.put(date, dateTime.atZone(ZoneId.systemDefault()).toEpochSecond());
-
-            } else {
-
-                //If date is already found:
-                Long currentTimestamp = dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
-                Long storedTimestamp = previousTimestampPerDay.get(date);
-
-                Long duration = currentTimestamp - storedTimestamp;
-
-                if(data.getActivity() == 0) {
-                    //Walking
-
-                    Long storedDuration = durationPerDayWalking.get(date);
-                    durationPerDayWalking.replace(date, storedDuration + duration);
-
-                } else {
-
-                    //Running
-                    Long storedDuration = durationPerDayRunning.get(date);
-                    durationPerDayRunning.replace(date, storedDuration + duration);
-
-                }
-
-                previousTimestampPerDay.replace(date, currentTimestamp);
-
-            }
-
-             */
+            durationPerDayWalking.put(data.getDate(), data.getWalkingDuration());
+            durationPerDayRunning.put(data.getDate(),data.getRunningDuration());
 
         });
 
-        System.out.println(Arrays.toString(durationPerDayRunning.keySet().toArray()));
 
         return new DataResponse<LocalDate, Long>(durationPerDayRunning, durationPerDayWalking);
 
@@ -189,13 +151,13 @@ public class DataHandler {
     public void fetchDurationByWeek() {
     }
 
-    public DataResponse<String, Long> fetchDurationByMonth(LocalDateTime startDate, LocalDateTime endDate) {
+    public DataResponse<String, Long> fetchDurationByMonth(LocalDate startDate, LocalDate endDate) {
 
         Map<String, Long> durationPerDayWalking = new HashMap<>();
         Map<String, Long> durationPerDayRunning = new HashMap<>();
 
         List<Month> monthsBetween = getMonthsBetween(startDate, endDate);
-        LocalDate start = startDate.toLocalDate();
+        LocalDate start = startDate;
         LocalDate end;
 
         for(Month m : monthsBetween) {
@@ -203,8 +165,8 @@ public class DataHandler {
             YearMonth yearMonth = YearMonth.of(start.getYear(), m.getValue());
             LocalDate endOfMonth = yearMonth.atEndOfMonth();
 
-            if(endOfMonth.atStartOfDay().isAfter(endDate)) {
-                end = endDate.toLocalDate();
+            if(endOfMonth.isAfter(endDate)) {
+                end = endDate;
             } else {
                 end = endOfMonth;
             }
@@ -264,9 +226,9 @@ public class DataHandler {
     public void fetchActivityLevelByMonth() {
     }
 
-    private static List<Month> getMonthsBetween(LocalDateTime startDate, LocalDateTime endDate) {
+    private static List<Month> getMonthsBetween(LocalDate startDate, LocalDate endDate) {
         List<Month> monthsBetween = new ArrayList<>();
-        LocalDateTime currentMonth = startDate;
+        LocalDate currentMonth = startDate;
 
         while (!currentMonth.isAfter(endDate)) {
             monthsBetween.add(currentMonth.getMonth());

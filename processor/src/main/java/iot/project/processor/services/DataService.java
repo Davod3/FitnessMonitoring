@@ -26,15 +26,15 @@ public class DataService {
         String dataType = request.getDataType();
         String dataPeriod = request.getDataPeriod();
 
-        LocalDateTime parsedStartDate = parseDate(request.getStart_date());
-        LocalDateTime parsedEndDate = parseDate(request.getEnd_date());
+        LocalDate parsedStartDate = parseDate(request.getStart_date());
+        LocalDate parsedEndDate = parseDate(request.getEnd_date());
 
         if(dataType.equalsIgnoreCase(DataType.DURATION.toString())) {
 
                 if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate.toLocalDate(),
-                            parsedEndDate.toLocalDate());
+                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
+                            parsedEndDate);
                     return dtofy(r.getRunningData(), r.getWalkingData());
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
@@ -137,8 +137,8 @@ public class DataService {
 
     }
 
-    private LocalDateTime parseDate(String dateString) {
-        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
+    private LocalDate parseDate(String dateString) {
+        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME).toLocalDate();
     }
 
 }
