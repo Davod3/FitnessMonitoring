@@ -1,22 +1,31 @@
 package iot.project.processor.dtos;
 
+import java.util.List;
 import java.util.Map;
 
 public class DataResponse<T, O> {
 
-    private Map<T, O> runningData;
-    private Map<T,O> walkingData;
+   private List<T> dates;
+   private List<O> informationWalking;
+   private List<O> informationRunning;
 
-    public DataResponse(Map<T, O> runningData, Map<T, O> walkingData) {
-        this.runningData = runningData;
-        this.walkingData = walkingData;
+    public DataResponse(List<T> dates, List<O> informationRunning, List<O> informationWalking) {
+
+        this.dates = dates;
+        this.informationWalking = informationWalking;
+        this.informationRunning = informationRunning;
+
     }
 
-    public Map<T, O> getRunningData() {
-        return runningData;
+    public List<T> getDates() {
+        return dates;
     }
 
-    public Map<T, O> getWalkingData() {
-        return walkingData;
+    public List<O> getInformationWalking() {
+        return informationWalking;
+    }
+
+    public List<O> getInformationRunning() {
+        return informationRunning;
     }
 }

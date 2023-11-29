@@ -131,20 +131,24 @@ public class DataHandler {
 
     public DataResponse<LocalDate, Long> fetchDurationByDay(LocalDate startDate, LocalDate endDate) {
 
-        Map<LocalDate, Long> durationPerDayWalking = new HashMap<>();
-        Map<LocalDate, Long> durationPerDayRunning = new HashMap<>();
+        List<LocalDate> dates = new LinkedList<>();
+
+        List<Long> durationsRunning = new LinkedList<>();
+        List<Long> durationsWalking = new LinkedList<>();
 
 
         //Get all data from db between these 2 days
         this.userDataRepo.findBetweenStartEnd(startDate, endDate).stream().forEach( data -> {
 
-            durationPerDayWalking.put(data.getDate(), data.getWalkingDuration());
-            durationPerDayRunning.put(data.getDate(),data.getRunningDuration());
+            dates.add(data.getDate());
+
+            durationsRunning.add(data.getRunningDuration());
+            durationsWalking.add(data.getWalkingDuration());
 
         });
 
 
-        return new DataResponse<LocalDate, Long>(durationPerDayRunning, durationPerDayWalking);
+        return new DataResponse<LocalDate, Long>(dates, durationsRunning, durationsWalking);
 
     }
 
@@ -153,8 +157,13 @@ public class DataHandler {
 
     public DataResponse<String, Long> fetchDurationByMonth(LocalDate startDate, LocalDate endDate) {
 
-        Map<String, Long> durationPerDayWalking = new HashMap<>();
-        Map<String, Long> durationPerDayRunning = new HashMap<>();
+        List<String> dates = new LinkedList<>();
+
+        List<Long> durationWalking = new LinkedList<>();
+        List<Long> durationRunning = new LinkedList<>();
+
+        //Map<String, Long> durationPerDayWalking = new HashMap<>();
+        //Map<String, Long> durationPerDayRunning = new HashMap<>();
 
         List<Month> monthsBetween = getMonthsBetween(startDate, endDate);
         LocalDate start = startDate;
@@ -171,31 +180,31 @@ public class DataHandler {
                 end = endOfMonth;
             }
 
-            System.out.println("Fetching " + m.toString() + ": " + start.toString() + " - " + end.toString());
-
             DataResponse<LocalDate, Long> durationPerDay = fetchDurationByDay(start, end);
 
             long totalRunning = 0;
 
-            for(long l : durationPerDay.getRunningData().values()) {
+            for(long l : durationPerDay.getInformationRunning()) {
                 totalRunning+=l;
             }
 
             long totalWalking = 0;
 
-            for(long l : durationPerDay.getWalkingData().values()) {
+            for(long l : durationPerDay.getInformationWalking()) {
                 totalWalking+=l;
             }
 
-            durationPerDayRunning.put(m.toString(), totalRunning);
+            dates.add(m.toString());
 
-            durationPerDayWalking.put(m.toString(),totalWalking);
+            durationRunning.add(totalRunning);
+
+            durationWalking.add(totalWalking);
 
             start = endOfMonth.plusDays(1);
 
         }
 
-        return new DataResponse<String, Long>(durationPerDayRunning, durationPerDayWalking);
+        return new DataResponse<String, Long>(dates, durationRunning, durationWalking);
 
     }
 
