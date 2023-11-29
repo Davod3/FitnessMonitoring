@@ -26,8 +26,8 @@ public class DataService {
         String dataType = request.getDataType();
         String dataPeriod = request.getDataPeriod();
 
-        LocalDateTime parsedStartDate = parseDate(request.getStart_date());
-        LocalDateTime parsedEndDate = parseDate(request.getEnd_date());
+        LocalDate parsedStartDate = parseDate(request.getStart_date());
+        LocalDate parsedEndDate = parseDate(request.getEnd_date());
 
         if(dataType.equalsIgnoreCase(DataType.DURATION.toString())) {
 
@@ -35,17 +35,19 @@ public class DataService {
 
                     DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
                             parsedEndDate);
-                    return dtofy(r.getRunningData(), r.getWalkingData());
+                    return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                    this.dataHandler.fetchDurationByWeek();
+                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByWeek(parsedStartDate,
+                            parsedEndDate);
+                    return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
                    DataResponse<String, Long> r = this.dataHandler.fetchDurationByMonth(parsedStartDate,
                            parsedEndDate);
-                   return dtofy(r.getRunningData(), r.getWalkingData());
+                   return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
                 }
 
@@ -102,7 +104,7 @@ public class DataService {
         return null;
     }
 
-    private <T,O> DataResponseDTO dtofy(Map<T, O> runningData, Map<T, O> walkingData) {
+    private <T,O> DataResponseDTO dtofy(List<T> dates, List<O> runningInformation, List<O> walkingInformation) {
 
         List<String> series = new LinkedList<>();
 
@@ -111,13 +113,13 @@ public class DataService {
 
         List<String> runningDurations = new LinkedList<>();
 
-        for(O o : runningData.values()) {
+        for(O o : runningInformation) {
             runningDurations.add(o.toString());
         }
 
         List<String> walkingDurations = new LinkedList<>();
 
-        for(O o : walkingData.values()) {
+        for(O o : walkingInformation) {
             walkingDurations.add(o.toString());
         }
 
@@ -128,7 +130,7 @@ public class DataService {
 
         List<String> labels = new LinkedList<>();
 
-        for(T t : runningData.keySet()){
+        for(T t : dates){
 
             labels.add(t.toString());
         }
@@ -137,8 +139,8 @@ public class DataService {
 
     }
 
-    private LocalDateTime parseDate(String dateString) {
-        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME);
+    private LocalDate parseDate(String dateString) {
+        return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME).toLocalDate();
     }
 
 }

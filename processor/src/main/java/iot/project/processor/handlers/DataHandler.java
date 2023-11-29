@@ -1,11 +1,11 @@
 package iot.project.processor.handlers;
 
-import iot.project.processor.documents.UserData;
+import iot.project.processor.entities.ProcessedUserData;
+import iot.project.processor.entities.UserData;
 import iot.project.processor.dtos.DataResponse;
-import iot.project.processor.dtos.DataResponseDTO;
-import iot.project.processor.repositories.UserDataRepository;
+import iot.project.processor.entities.Week;
+import iot.project.processor.repositories.SavedUserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Component;
 
@@ -16,17 +16,17 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
 import java.util.*;
 
 @Component
 public class DataHandler {
 
     private static final String TRAINING_DATA = "training.data";
-    private static final String USER_DATA = "user_data";
+    private static final String USER_DATA = "processed_user_data";
+    private static final String RAW_USER_DATA = "raw_user_data";
 
     @Autowired
-    private UserDataRepository userDataRepo;
+    private SavedUserDataRepository userDataRepo;
 
     @Autowired
     private MongoTemplate mongoTemplate;
@@ -52,13 +52,56 @@ public class DataHandler {
             //Skip header line
             try {
                 UserData data = dataParser(line);
-                this.mongoTemplate.save(data, USER_DATA);
+                this.mongoTemplate.save(data, RAW_USER_DATA);
+                computeAndSave(data);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
 
 
         }
+
+    }
+
+    private void computeAndSave(UserData data) {
+
+        ProcessedUserData savedData = this.userDataRepo.findByDate(data.getDateTime().toLocalDate());
+
+        if(savedData != null) {
+
+            long oldTimestamp = savedData.getLastTimestamp();
+            long newTimestamp = data.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond();
+            long activityDuration = newTimestamp - oldTimestamp;
+
+            savedData.setLastTimestamp(newTimestamp);
+
+            if(data.getActivity() == 0) {
+
+                //Walking
+                long oldWalkingDuration = savedData.getWalkingDuration();
+                savedData.setWalkingDuration(oldWalkingDuration + activityDuration);
+
+            } else {
+
+                //Running
+                long oldRunningDuration = savedData.getRunningDuration();
+                savedData.setRunningDuration(oldRunningDuration + activityDuration);
+            }
+
+
+        } else {
+
+            //Date found for the first time
+            savedData = new ProcessedUserData();
+            savedData.setDate(data.getDateTime().toLocalDate());
+            savedData.setRunningDuration(0);
+            savedData.setWalkingDuration(0);
+            savedData.setLastTimestamp(data.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond());
+
+        }
+
+        this.userDataRepo.save(savedData);
+
 
     }
 
@@ -87,108 +130,113 @@ public class DataHandler {
 
     }
 
-    public DataResponse<LocalDate, Long> fetchDurationByDay(LocalDateTime startDate, LocalDateTime endDate) {
+    public DataResponse<LocalDate, Long> fetchDurationByDay(LocalDate startDate, LocalDate endDate) {
 
-        Map<LocalDate, Long> durationPerDayWalking = new HashMap<>();
-        Map<LocalDate, Long> durationPerDayRunning = new HashMap<>();
+        List<LocalDate> dates = new LinkedList<>();
 
-        Map<LocalDate, Long> previousTimestampPerDay = new HashMap<>();
+        List<Long> durationsRunning = new LinkedList<>();
+        List<Long> durationsWalking = new LinkedList<>();
+
 
         //Get all data from db between these 2 days
         this.userDataRepo.findBetweenStartEnd(startDate, endDate).stream().forEach( data -> {
 
-            LocalDateTime dateTime = data.getDateTime();
-            LocalDate date = dateTime.toLocalDate();
+            dates.add(data.getDate());
 
-            if(!previousTimestampPerDay.containsKey(date)){
-
-                //If date is found for first time:
-                durationPerDayWalking.put(date, 0L);
-                durationPerDayRunning.put(date, 0L);
-                previousTimestampPerDay.put(date, dateTime.atZone(ZoneId.systemDefault()).toEpochSecond());
-
-            } else {
-
-                //If date is already found:
-                Long currentTimestamp = dateTime.atZone(ZoneId.systemDefault()).toEpochSecond();
-                Long storedTimestamp = previousTimestampPerDay.get(date);
-
-                Long duration = currentTimestamp - storedTimestamp;
-
-                if(data.getActivity() == 0) {
-                    //Walking
-
-                    Long storedDuration = durationPerDayWalking.get(date);
-                    durationPerDayWalking.replace(date, storedDuration + duration);
-
-                } else {
-
-                    //Running
-                    Long storedDuration = durationPerDayRunning.get(date);
-                    durationPerDayRunning.replace(date, storedDuration + duration);
-
-                }
-
-                previousTimestampPerDay.replace(date, currentTimestamp);
-
-            }
+            durationsRunning.add(data.getRunningDuration());
+            durationsWalking.add(data.getWalkingDuration());
 
         });
 
-        System.out.println(Arrays.toString(durationPerDayRunning.keySet().toArray()));
 
-        return new DataResponse<LocalDate, Long>(durationPerDayRunning, durationPerDayWalking);
+        return new DataResponse<LocalDate, Long>(dates, durationsRunning, durationsWalking);
 
     }
 
-    public void fetchDurationByWeek() {
+    public DataResponse<LocalDate, Long> fetchDurationByWeek(LocalDate startDate, LocalDate endDate) {
+
+        List<LocalDate> dates = new LinkedList<>();
+
+        List<Long> durationWalking = new LinkedList<>();
+        List<Long> durationRunning = new LinkedList<>();
+
+        List<Week> weeks = getWeeksBetween(startDate, endDate);
+
+        for (Week w : weeks) {
+
+            DataResponse<LocalDate, Long> response = fetchDurationByDay(w.getStart(), w.getEnd());
+
+            dates.add(w.getStart());
+
+            long totalWalking = 0;
+
+            for(long l : response.getInformationWalking()) {
+                totalWalking+=l;
+            }
+
+            durationWalking.add(totalWalking);
+
+            long totalRunning = 0;
+
+            for(long l : response.getInformationRunning()) {
+                totalRunning+=l;
+            }
+
+            durationRunning.add(totalRunning);
+
+        }
+
+        return new DataResponse<LocalDate, Long>(dates, durationRunning, durationWalking);
+        
     }
 
-    public DataResponse<String, Long> fetchDurationByMonth(LocalDateTime startDate, LocalDateTime endDate) {
+    public DataResponse<String, Long> fetchDurationByMonth(LocalDate startDate, LocalDate endDate) {
 
-        Map<String, Long> durationPerDayWalking = new HashMap<>();
-        Map<String, Long> durationPerDayRunning = new HashMap<>();
+        List<String> dates = new LinkedList<>();
+
+        List<Long> durationWalking = new LinkedList<>();
+        List<Long> durationRunning = new LinkedList<>();
 
         List<Month> monthsBetween = getMonthsBetween(startDate, endDate);
-        LocalDateTime start = startDate;
-        LocalDateTime end;
+        LocalDate start = startDate;
+        LocalDate end;
 
         for(Month m : monthsBetween) {
 
             YearMonth yearMonth = YearMonth.of(start.getYear(), m.getValue());
             LocalDate endOfMonth = yearMonth.atEndOfMonth();
 
-            if(endOfMonth.atStartOfDay().isAfter(endDate)) {
+            if(endOfMonth.isAfter(endDate)) {
                 end = endDate;
             } else {
-                end = endOfMonth.atStartOfDay();
+                end = endOfMonth;
             }
-
-            System.out.println("Fetching " + m.toString() + ": " + start.toString() + " - " + end.toString());
 
             DataResponse<LocalDate, Long> durationPerDay = fetchDurationByDay(start, end);
 
             long totalRunning = 0;
 
-            for(long l : durationPerDay.getRunningData().values()) {
+            for(long l : durationPerDay.getInformationRunning()) {
                 totalRunning+=l;
             }
 
             long totalWalking = 0;
 
-            for(long l : durationPerDay.getWalkingData().values()) {
+            for(long l : durationPerDay.getInformationWalking()) {
                 totalWalking+=l;
             }
 
-            durationPerDayRunning.put(m.toString(), totalRunning);
+            dates.add(m.toString());
 
-            durationPerDayWalking.put(m.toString(),totalWalking);
+            durationRunning.add(totalRunning);
 
-            start = endOfMonth.plusDays(1).atStartOfDay();
+            durationWalking.add(totalWalking);
+
+            start = endOfMonth.plusDays(1);
 
         }
 
-        return new DataResponse<String, Long>(durationPerDayRunning, durationPerDayWalking);
+        return new DataResponse<String, Long>(dates, durationRunning, durationWalking);
 
     }
 
@@ -219,9 +267,9 @@ public class DataHandler {
     public void fetchActivityLevelByMonth() {
     }
 
-    private static List<Month> getMonthsBetween(LocalDateTime startDate, LocalDateTime endDate) {
+    private static List<Month> getMonthsBetween(LocalDate startDate, LocalDate endDate) {
         List<Month> monthsBetween = new ArrayList<>();
-        LocalDateTime currentMonth = startDate;
+        LocalDate currentMonth = startDate;
 
         while (!currentMonth.isAfter(endDate)) {
             monthsBetween.add(currentMonth.getMonth());
@@ -229,5 +277,39 @@ public class DataHandler {
         }
 
         return monthsBetween;
+    }
+
+    private List<Week> getWeeksBetween(LocalDate startDate, LocalDate endDate) {
+
+        List<Week> result = new LinkedList<>();
+
+        LocalDate start = startDate;
+        LocalDate currentDate = start;
+
+        while (currentDate.isBefore(endDate)) {
+
+            if(currentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                Week w = new Week(start, currentDate);
+                result.add(w);
+                LocalDate nextDate = currentDate.plusDays(1);
+                start = nextDate;
+                currentDate = nextDate;
+
+            } else {
+
+                LocalDate nextDate = currentDate.plusDays(1);
+                currentDate = nextDate;
+
+            }
+
+        }
+
+        if(currentDate.isEqual(endDate)) {
+            Week w = new Week(start, currentDate);
+            result.add(w);
+        }
+
+        return result;
+
     }
 }
