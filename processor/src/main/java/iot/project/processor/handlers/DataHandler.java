@@ -1,8 +1,9 @@
 package iot.project.processor.handlers;
 
-import iot.project.processor.documents.ProcessedUserData;
-import iot.project.processor.documents.UserData;
+import iot.project.processor.entities.ProcessedUserData;
+import iot.project.processor.entities.UserData;
 import iot.project.processor.dtos.DataResponse;
+import iot.project.processor.entities.Week;
 import iot.project.processor.repositories.SavedUserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -152,7 +153,41 @@ public class DataHandler {
 
     }
 
-    public void fetchDurationByWeek() {
+    public DataResponse<LocalDate, Long> fetchDurationByWeek(LocalDate startDate, LocalDate endDate) {
+
+        List<LocalDate> dates = new LinkedList<>();
+
+        List<Long> durationWalking = new LinkedList<>();
+        List<Long> durationRunning = new LinkedList<>();
+
+        List<Week> weeks = getWeeksBetween(startDate, endDate);
+
+        for (Week w : weeks) {
+
+            DataResponse<LocalDate, Long> response = fetchDurationByDay(w.getStart(), w.getEnd());
+
+            dates.add(w.getStart());
+
+            long totalWalking = 0;
+
+            for(long l : response.getInformationWalking()) {
+                totalWalking+=l;
+            }
+
+            durationWalking.add(totalWalking);
+
+            long totalRunning = 0;
+
+            for(long l : response.getInformationRunning()) {
+                totalRunning+=l;
+            }
+
+            durationRunning.add(totalRunning);
+
+        }
+
+        return new DataResponse<LocalDate, Long>(dates, durationRunning, durationWalking);
+        
     }
 
     public DataResponse<String, Long> fetchDurationByMonth(LocalDate startDate, LocalDate endDate) {
@@ -161,9 +196,6 @@ public class DataHandler {
 
         List<Long> durationWalking = new LinkedList<>();
         List<Long> durationRunning = new LinkedList<>();
-
-        //Map<String, Long> durationPerDayWalking = new HashMap<>();
-        //Map<String, Long> durationPerDayRunning = new HashMap<>();
 
         List<Month> monthsBetween = getMonthsBetween(startDate, endDate);
         LocalDate start = startDate;
@@ -245,5 +277,39 @@ public class DataHandler {
         }
 
         return monthsBetween;
+    }
+
+    private List<Week> getWeeksBetween(LocalDate startDate, LocalDate endDate) {
+
+        List<Week> result = new LinkedList<>();
+
+        LocalDate start = startDate;
+        LocalDate currentDate = start;
+
+        while (currentDate.isBefore(endDate)) {
+
+            if(currentDate.getDayOfWeek() == DayOfWeek.SUNDAY) {
+                Week w = new Week(start, currentDate);
+                result.add(w);
+                LocalDate nextDate = currentDate.plusDays(1);
+                start = nextDate;
+                currentDate = nextDate;
+
+            } else {
+
+                LocalDate nextDate = currentDate.plusDays(1);
+                currentDate = nextDate;
+
+            }
+
+        }
+
+        if(currentDate.isEqual(endDate)) {
+            Week w = new Week(start, currentDate);
+            result.add(w);
+        }
+
+        return result;
+
     }
 }

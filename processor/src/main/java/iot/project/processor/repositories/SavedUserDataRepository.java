@@ -1,6 +1,6 @@
 package iot.project.processor.repositories;
 
-import iot.project.processor.documents.ProcessedUserData;
+import iot.project.processor.entities.ProcessedUserData;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 

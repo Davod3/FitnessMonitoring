@@ -1,10 +1,9 @@
-package iot.project.processor.documents;
+package iot.project.processor.entities;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Document("processed_user_data")
 public class ProcessedUserData {

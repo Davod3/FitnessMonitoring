@@ -39,7 +39,9 @@ public class DataService {
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                    this.dataHandler.fetchDurationByWeek();
+                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByWeek(parsedStartDate,
+                            parsedEndDate);
+                    return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
@@ -102,7 +104,7 @@ public class DataService {
         return null;
     }
 
-    private <T,O> DataResponseDTO dtofy(List<T> dates, List<O> runningInformation, List<O> walkingInformation) {F
+    private <T,O> DataResponseDTO dtofy(List<T> dates, List<O> runningInformation, List<O> walkingInformation) {
 
         List<String> series = new LinkedList<>();
 
