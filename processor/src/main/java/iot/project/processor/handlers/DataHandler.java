@@ -187,7 +187,7 @@ public class DataHandler {
         }
 
         return new DataResponse<LocalDate, Long>(dates, durationRunning, durationWalking);
-        
+
     }
 
     public DataResponse<String, Long> fetchDurationByMonth(LocalDate startDate, LocalDate endDate) {
