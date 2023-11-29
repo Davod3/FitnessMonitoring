@@ -7,6 +7,14 @@
         "info": ""
     },
     {
+        "id": "bbe70953285e276c",
+        "type": "tab",
+        "label": "Settings",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "037aecdc6926ce9a",
         "type": "mqtt-broker",
         "name": "IdC",
@@ -276,6 +284,26 @@
         "order": 15,
         "width": 16,
         "height": 1
+    },
+    {
+        "id": "ee4fe73eb21664d5",
+        "type": "ui_tab",
+        "name": "Settings",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "95926c1d8c715b2d",
+        "type": "ui_group",
+        "name": "Settings",
+        "tab": "ee4fe73eb21664d5",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
     },
     {
         "id": "df924a2577f12739",
@@ -750,7 +778,7 @@
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "isNull",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -797,7 +825,7 @@
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "Created Request",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -814,7 +842,7 @@
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "Response",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -844,6 +872,316 @@
             [
                 "24a77358085c8c36",
                 "df924a2577f12739"
+            ]
+        ]
+    },
+    {
+        "id": "fb6c935414224f8a",
+        "type": "ui_text_input",
+        "z": "bbe70953285e276c",
+        "name": "Weight",
+        "label": "Weight(Kg)",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 7,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "mode": "number",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "msg",
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "28505c38d0f5cd49"
+            ]
+        ]
+    },
+    {
+        "id": "927552e0ae2823a1",
+        "type": "ui_text_input",
+        "z": "bbe70953285e276c",
+        "name": "Height",
+        "label": "Height(Cm)",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 6,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "mode": "number",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "msg",
+        "x": 330,
+        "y": 380,
+        "wires": [
+            [
+                "58d39a571356d9c3"
+            ]
+        ]
+    },
+    {
+        "id": "c4d7a7d74bf09805",
+        "type": "ui_dropdown",
+        "z": "bbe70953285e276c",
+        "name": "Gender",
+        "label": "Gender",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "95926c1d8c715b2d",
+        "order": 8,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "",
+                "value": "Male",
+                "type": "str"
+            },
+            {
+                "label": "",
+                "value": "Female",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 320,
+        "y": 520,
+        "wires": [
+            [
+                "44449b3cecd3031c"
+            ]
+        ]
+    },
+    {
+        "id": "58b246dda7e0bb29",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "name": "Age",
+        "label": "Age",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 790,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b961f60963445434",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "name": "Weight",
+        "label": "Weight(Kg)",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 790,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "37a29ebcf01a344e",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "name": "Height",
+        "label": "Height(Cm)",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 790,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8c8d1b3b518aea6a",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "Gender",
+        "label": "Gender",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 800,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "cdbc5cf51299d1cb",
+        "type": "ui_numeric",
+        "z": "bbe70953285e276c",
+        "name": "Age",
+        "label": "Age",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 5,
+        "width": 0,
+        "height": 0,
+        "wrap": true,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": "1",
+        "max": "150",
+        "step": 1,
+        "className": "",
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "4e707313783b208c"
+            ]
+        ]
+    },
+    {
+        "id": "4e707313783b208c",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalAge",
+        "rules": [
+            {
+                "t": "set",
+                "p": "age",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 100,
+        "wires": [
+            [
+                "58b246dda7e0bb29"
+            ]
+        ]
+    },
+    {
+        "id": "28505c38d0f5cd49",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalWeight",
+        "rules": [
+            {
+                "t": "set",
+                "p": "weight",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 240,
+        "wires": [
+            [
+                "b961f60963445434"
+            ]
+        ]
+    },
+    {
+        "id": "58d39a571356d9c3",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalHeight",
+        "rules": [
+            {
+                "t": "set",
+                "p": "height",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 380,
+        "wires": [
+            [
+                "37a29ebcf01a344e"
+            ]
+        ]
+    },
+    {
+        "id": "44449b3cecd3031c",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalGender",
+        "rules": [
+            {
+                "t": "set",
+                "p": "gender",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 520,
+        "wires": [
+            [
+                "8c8d1b3b518aea6a"
             ]
         ]
     }
