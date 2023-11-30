@@ -10,9 +10,13 @@ public class DataRequestDTO {
     private double height;
     private double weight;
     private String gender;
+    private double walking_threshold;
+    private double running_threshold;
 
     public DataRequestDTO(String dataType, String dataPeriod, String start_date, String end_date, int age,
-                          double height, double weight, String gender) {
+                          double height, double weight, String gender, double walking_threshold,
+                          double running_threshold) {
+
         this.dataType = dataType;
         this.dataPeriod = dataPeriod;
         this.start_date = start_date;
@@ -21,6 +25,9 @@ public class DataRequestDTO {
         this.height = height;
         this.weight = weight;
         this.gender = gender;
+        this.walking_threshold = walking_threshold;
+        this.running_threshold = running_threshold;
+
     }
 
     public String getDataType() {
@@ -85,5 +92,21 @@ public class DataRequestDTO {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public double getWalking_threshold() {
+        return walking_threshold;
+    }
+
+    public void setWalking_threshold(double walking_threshold) {
+        this.walking_threshold = walking_threshold;
+    }
+
+    public double getRunning_threshold() {
+        return running_threshold;
+    }
+
+    public void setRunning_threshold(double running_threshold) {
+        this.running_threshold = running_threshold;
     }
 }

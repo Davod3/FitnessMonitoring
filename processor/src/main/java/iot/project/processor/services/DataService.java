@@ -108,15 +108,18 @@ public class DataService {
 
             if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                this.activityHandler.fetchActivityLevelByDay();
+                this.activityHandler.fetchActivityLevelByDay(parsedStartDate, parsedEndDate,
+                        request.getWalking_threshold(), request.getRunning_threshold());
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                this.activityHandler.fetchActivityLevelByWeek();
+                this.activityHandler.fetchActivityLevelByWeek(parsedStartDate, parsedEndDate,
+                        request.getWalking_threshold(), request.getRunning_threshold());
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-                this.activityHandler.fetchActivityLevelByMonth();
+                this.activityHandler.fetchActivityLevelByMonth(parsedStartDate, parsedEndDate,
+                        request.getWalking_threshold(), request.getRunning_threshold());
 
             }
 
