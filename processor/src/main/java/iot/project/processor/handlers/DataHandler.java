@@ -130,9 +130,9 @@ public class DataHandler {
 
     }
 
-    public DataResponse<LocalDate, Long> fetchDurationByDay(LocalDate startDate, LocalDate endDate) {
+    public DataResponse<String, Long> fetchDurationByDay(LocalDate startDate, LocalDate endDate) {
 
-        List<LocalDate> dates = new LinkedList<>();
+        List<String> dates = new LinkedList<>();
 
         List<Long> durationsRunning = new LinkedList<>();
         List<Long> durationsWalking = new LinkedList<>();
@@ -141,7 +141,7 @@ public class DataHandler {
         //Get all data from db between these 2 days
         this.userDataRepo.findBetweenStartEnd(startDate, endDate).stream().forEach( data -> {
 
-            dates.add(data.getDate());
+            dates.add(data.getDate().toString());
 
             durationsRunning.add(data.getRunningDuration());
             durationsWalking.add(data.getWalkingDuration());
@@ -149,13 +149,13 @@ public class DataHandler {
         });
 
 
-        return new DataResponse<LocalDate, Long>(dates, durationsRunning, durationsWalking);
+        return new DataResponse<String, Long>(dates, durationsRunning, durationsWalking);
 
     }
 
-    public DataResponse<LocalDate, Long> fetchDurationByWeek(LocalDate startDate, LocalDate endDate) {
+    public DataResponse<String, Long> fetchDurationByWeek(LocalDate startDate, LocalDate endDate) {
 
-        List<LocalDate> dates = new LinkedList<>();
+        List<String> dates = new LinkedList<>();
 
         List<Long> durationWalking = new LinkedList<>();
         List<Long> durationRunning = new LinkedList<>();
@@ -164,9 +164,9 @@ public class DataHandler {
 
         for (Week w : weeks) {
 
-            DataResponse<LocalDate, Long> response = fetchDurationByDay(w.getStart(), w.getEnd());
+            DataResponse<String, Long> response = fetchDurationByDay(w.getStart(), w.getEnd());
 
-            dates.add(w.getStart());
+            dates.add(w.getStart().toString());
 
             long totalWalking = 0;
 
@@ -186,7 +186,7 @@ public class DataHandler {
 
         }
 
-        return new DataResponse<LocalDate, Long>(dates, durationRunning, durationWalking);
+        return new DataResponse<String, Long>(dates, durationRunning, durationWalking);
 
     }
 
@@ -212,7 +212,7 @@ public class DataHandler {
                 end = endOfMonth;
             }
 
-            DataResponse<LocalDate, Long> durationPerDay = fetchDurationByDay(start, end);
+            DataResponse<String, Long> durationPerDay = fetchDurationByDay(start, end);
 
             long totalRunning = 0;
 
@@ -238,15 +238,6 @@ public class DataHandler {
 
         return new DataResponse<String, Long>(dates, durationRunning, durationWalking);
 
-    }
-
-    public void fetchCaloriesByDay() {
-    }
-
-    public void fetchCaloriesByWeek() {
-    }
-
-    public void fetchCaloriesByMonth() {
     }
 
     public void fetchDistanceByDay() {

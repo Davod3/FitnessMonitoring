@@ -6,12 +6,21 @@ public class DataRequestDTO {
     private String dataPeriod;
     private String start_date;
     private String end_date;
+    private int age;
+    private double height;
+    private double weight;
+    private String gender;
 
-    public DataRequestDTO(String dataType, String dataPeriod, String start_date, String end_date) {
+    public DataRequestDTO(String dataType, String dataPeriod, String start_date, String end_date, int age,
+                          double height, double weight, String gender) {
         this.dataType = dataType;
         this.dataPeriod = dataPeriod;
         this.start_date = start_date;
         this.end_date = end_date;
+        this.age = age;
+        this.height = height;
+        this.weight = weight;
+        this.gender = gender;
     }
 
     public String getDataType() {
@@ -44,5 +53,37 @@ public class DataRequestDTO {
 
     public void setEnd_date(String end_date) {
         this.end_date = end_date;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public double getHeight() {
+        return height;
+    }
+
+    public void setHeight(double height) {
+        this.height = height;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
     }
 }

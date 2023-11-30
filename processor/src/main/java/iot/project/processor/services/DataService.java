@@ -1,6 +1,7 @@
 package iot.project.processor.services;
 
 import iot.project.processor.dtos.*;
+import iot.project.processor.handlers.CaloriesHandler;
 import iot.project.processor.handlers.DataHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class DataService {
 
     @Autowired private DataHandler dataHandler;
+    @Autowired private CaloriesHandler caloriesHandler;
 
     public DataResponseDTO fetchData(DataRequestDTO request) {
 
@@ -33,13 +35,13 @@ public class DataService {
 
                 if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
+                    DataResponse<String, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
                             parsedEndDate);
                     return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
                 } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByWeek(parsedStartDate,
+                    DataResponse<String, Long> r = this.dataHandler.fetchDurationByWeek(parsedStartDate,
                             parsedEndDate);
                     return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
@@ -55,15 +57,21 @@ public class DataService {
 
             if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                this.dataHandler.fetchCaloriesByDay();
+                DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByDay(parsedStartDate, parsedEndDate, request.getAge(),
+                        request.getHeight(), request.getWeight(), request.getGender());
+                return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                this.dataHandler.fetchCaloriesByWeek();
+                DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByWeek(parsedStartDate, parsedEndDate, request.getAge(),
+                        request.getHeight(), request.getWeight(), request.getGender());
+                return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-                this.dataHandler.fetchCaloriesByMonth();
+                DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByMonth(parsedStartDate, parsedEndDate, request.getAge(),
+                        request.getHeight(), request.getWeight(), request.getGender());
+                return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
             }
 
