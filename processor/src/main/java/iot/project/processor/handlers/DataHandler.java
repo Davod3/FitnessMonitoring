@@ -240,15 +240,6 @@ public class DataHandler {
 
     }
 
-    public void fetchDistanceByDay() {
-    }
-
-    public void fetchDistanceByWeek() {
-    }
-
-    public void fetchDistanceByMonth() {
-    }
-
     public void fetchActivityLevelByDay() {
     }
 

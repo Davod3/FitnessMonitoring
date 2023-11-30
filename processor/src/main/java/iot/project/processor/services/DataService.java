@@ -3,6 +3,7 @@ package iot.project.processor.services;
 import iot.project.processor.dtos.*;
 import iot.project.processor.handlers.CaloriesHandler;
 import iot.project.processor.handlers.DataHandler;
+import iot.project.processor.handlers.DistanceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +23,7 @@ public class DataService {
 
     @Autowired private DataHandler dataHandler;
     @Autowired private CaloriesHandler caloriesHandler;
+    @Autowired private DistanceHandler distanceHandler;
 
     public DataResponseDTO fetchData(DataRequestDTO request) {
 
@@ -79,15 +81,24 @@ public class DataService {
 
             if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                this.dataHandler.fetchDistanceByDay();
+                DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByDay(parsedStartDate,
+                        parsedEndDate, request.getAge(), request.getGender());
+
+                return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                this.dataHandler.fetchDistanceByWeek();
+                DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByWeek(parsedStartDate,
+                        parsedEndDate, request.getAge(), request.getGender());
+
+                return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-                this.dataHandler.fetchDistanceByMonth();
+                DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByMonth(parsedStartDate,
+                        parsedEndDate, request.getAge(), request.getGender());
+
+                return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
             }
 
