@@ -240,15 +240,6 @@ public class DataHandler {
 
     }
 
-    public void fetchActivityLevelByDay() {
-    }
-
-    public void fetchActivityLevelByWeek() {
-    }
-
-    public void fetchActivityLevelByMonth() {
-    }
-
     private static List<Month> getMonthsBetween(LocalDate startDate, LocalDate endDate) {
         List<Month> monthsBetween = new ArrayList<>();
         LocalDate currentMonth = startDate;

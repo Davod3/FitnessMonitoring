@@ -1,6 +1,7 @@
 package iot.project.processor.services;
 
 import iot.project.processor.dtos.*;
+import iot.project.processor.handlers.ActivityLevelHandler;
 import iot.project.processor.handlers.CaloriesHandler;
 import iot.project.processor.handlers.DataHandler;
 import iot.project.processor.handlers.DistanceHandler;
@@ -24,6 +25,7 @@ public class DataService {
     @Autowired private DataHandler dataHandler;
     @Autowired private CaloriesHandler caloriesHandler;
     @Autowired private DistanceHandler distanceHandler;
+    @Autowired private ActivityLevelHandler activityHandler;
 
     public DataResponseDTO fetchData(DataRequestDTO request) {
 
@@ -106,15 +108,15 @@ public class DataService {
 
             if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                this.dataHandler.fetchActivityLevelByDay();
+                this.activityHandler.fetchActivityLevelByDay();
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                this.dataHandler.fetchActivityLevelByWeek();
+                this.activityHandler.fetchActivityLevelByWeek();
 
             } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-                this.dataHandler.fetchActivityLevelByMonth();
+                this.activityHandler.fetchActivityLevelByMonth();
 
             }
 
