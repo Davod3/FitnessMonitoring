@@ -640,3 +640,21 @@
 1701447720: Client processor disconnected.
 1701447725: mosquitto version 2.0.18 terminating
 1701447725: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1701448642: mosquitto version 2.0.18 starting
+1701448642: Config loaded from /mosquitto/config/mosquitto.conf.
+1701448642: Opening ipv4 listen socket on port 1883.
+1701448642: mosquitto version 2.0.18 running
+1701448648: New connection from 172.100.10.14:46874 on port 1883.
+1701448649: New client connected from 172.100.10.14:46874 as processor (p2, c1, k60).
+1701449842: Client processor disconnected.
+1701449847: mosquitto version 2.0.18 terminating
+1701449847: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1701449943: mosquitto version 2.0.18 starting
+1701449943: Config loaded from /mosquitto/config/mosquitto.conf.
+1701449943: Opening ipv4 listen socket on port 1883.
+1701449943: mosquitto version 2.0.18 running
+1701449947: New connection from 172.100.10.14:53128 on port 1883.
+1701449948: New client connected from 172.100.10.14:53128 as processor (p2, c1, k60).
+1701450306: Client processor disconnected.
+1701450312: mosquitto version 2.0.18 terminating
+1701450312: Saving in-memory database to /mosquitto/data//mosquitto.db.

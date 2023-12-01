@@ -13,12 +13,12 @@ import java.util.List;
 public class DistanceHandler {
 
     @Autowired
-    private DataHandler dataHandler;
+    private DurationHandler durationHandler;
 
     public DataResponse<String, Double> fetchDistanceByDay(LocalDate startDate, LocalDate endDate, int age,
                                                            String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByDay(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByDay(startDate, endDate);
 
         return fetchDistance(response, age, gender);
     }
@@ -26,7 +26,7 @@ public class DistanceHandler {
     public DataResponse<String, Double> fetchDistanceByWeek(LocalDate startDate, LocalDate endDate, int age,
                                                             String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByWeek(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByWeek(startDate, endDate);
 
         return fetchDistance(response, age, gender);
     }
@@ -34,7 +34,7 @@ public class DistanceHandler {
     public DataResponse<String, Double> fetchDistanceByMonth(LocalDate startDate, LocalDate endDate, int age,
                                                              String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByMonth(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByMonth(startDate, endDate);
 
         return fetchDistance(response, age, gender);
     }

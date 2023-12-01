@@ -12,7 +12,7 @@ import java.util.List;
 public class ActivityLevelHandler {
 
     @Autowired
-    private DataHandler dataHandler;
+    private DurationHandler durationHandler;
 
     private final int WEEK_MULTIPLIER = 7;
     private final int MONTH_MULTIPLIER = 30;
@@ -21,7 +21,7 @@ public class ActivityLevelHandler {
     public DataResponse<String, Integer> fetchActivityLevelByDay(LocalDate startDate, LocalDate endDate,
                                                                  double thresholdWalking, double thresholdRunning) {
 
-        DataResponse<String, Long> durations = this.dataHandler.fetchDurationByDay(startDate, endDate);
+        DataResponse<String, Long> durations = this.durationHandler.fetchDurationByDay(startDate, endDate);
 
         return fetchActivityLevel(durations, thresholdWalking*60, thresholdRunning*60, DAY_MULTIPLIER);
 
@@ -30,7 +30,7 @@ public class ActivityLevelHandler {
     public DataResponse<String, Integer> fetchActivityLevelByWeek(LocalDate startDate, LocalDate endDate,
                                                                   double thresholdWalking, double thresholdRunning) {
 
-        DataResponse<String, Long> durations = this.dataHandler.fetchDurationByWeek(startDate, endDate);
+        DataResponse<String, Long> durations = this.durationHandler.fetchDurationByWeek(startDate, endDate);
 
         return fetchActivityLevel(durations, thresholdWalking*60, thresholdRunning*60, WEEK_MULTIPLIER);
 
@@ -39,7 +39,7 @@ public class ActivityLevelHandler {
     public DataResponse<String, Integer> fetchActivityLevelByMonth(LocalDate startDate, LocalDate endDate,
                                                                    double thresholdWalking, double thresholdRunning) {
 
-        DataResponse<String, Long> durations = this.dataHandler.fetchDurationByMonth(startDate, endDate);
+        DataResponse<String, Long> durations = this.durationHandler.fetchDurationByMonth(startDate, endDate);
 
         return fetchActivityLevel(durations, thresholdWalking*60, thresholdRunning*60, MONTH_MULTIPLIER);
 

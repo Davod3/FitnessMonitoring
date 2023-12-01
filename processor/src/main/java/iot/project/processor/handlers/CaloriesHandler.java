@@ -13,14 +13,14 @@ import java.util.List;
 public class CaloriesHandler {
 
     @Autowired
-    private DataHandler dataHandler;
+    private DurationHandler durationHandler;
     private final double CONSTANT_1 = 0.035;
     private final double CONSTANT_2 = 0.029;
 
     public DataResponse<String, Double> fetchCaloriesByDay(LocalDate startDate, LocalDate endDate, int age,
                                                               double height, double weight, String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByDay(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByDay(startDate, endDate);
 
         return fetchCalories(response, age, height, weight, gender);
 
@@ -30,7 +30,7 @@ public class CaloriesHandler {
     public DataResponse<String, Double> fetchCaloriesByWeek(LocalDate startDate, LocalDate endDate, int age,
                                                                double height, double weight, String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByWeek(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByWeek(startDate, endDate);
 
         return fetchCalories(response, age, height, weight, gender);
 
@@ -39,7 +39,7 @@ public class CaloriesHandler {
     public DataResponse<String, Double> fetchCaloriesByMonth(LocalDate startDate, LocalDate endDate, int age,
                                                                 double height, double weight, String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByMonth(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByMonth(startDate, endDate);
 
         return fetchCalories(response, age, height, weight, gender);
     }
