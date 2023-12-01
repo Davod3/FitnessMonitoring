@@ -131,18 +131,24 @@ public class DataService {
 
         if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-            this.activityHandler.fetchActivityLevelByDay(parsedStartDate, parsedEndDate,
+            DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByDay(parsedStartDate, parsedEndDate,
                     request.getWalking_threshold(), request.getRunning_threshold());
+
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-            this.activityHandler.fetchActivityLevelByWeek(parsedStartDate, parsedEndDate,
+            DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByWeek(parsedStartDate, parsedEndDate,
                     request.getWalking_threshold(), request.getRunning_threshold());
+
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-            this.activityHandler.fetchActivityLevelByMonth(parsedStartDate, parsedEndDate,
+            DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByMonth(parsedStartDate, parsedEndDate,
                     request.getWalking_threshold(), request.getRunning_threshold());
+
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
 
         }
 
