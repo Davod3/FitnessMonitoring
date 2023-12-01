@@ -5,6 +5,10 @@ import iot.project.processor.handlers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.xml.datatype.DatatypeFactory;
+import javax.xml.datatype.Duration;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -30,19 +34,25 @@ public class DataService {
 
             DataResponse<String, Long> r = this.durationHandler.fetchDurationByDay(parsedStartDate,
                     parsedEndDate);
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
+
+            return dtofy(r.getDates(), convertDurations(r.getInformationRunning()),
+                    convertDurations(r.getInformationWalking()), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
             DataResponse<String, Long> r = this.durationHandler.fetchDurationByWeek(parsedStartDate,
                     parsedEndDate);
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
+
+            return dtofy(r.getDates(),convertDurations(r.getInformationRunning()),
+                    convertDurations(r.getInformationWalking()), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
             DataResponse<String, Long> r = this.durationHandler.fetchDurationByMonth(parsedStartDate,
                     parsedEndDate);
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
+
+            return dtofy(r.getDates(), convertDurations(r.getInformationRunning()),
+                    convertDurations(r.getInformationWalking()), r.getSeries());
 
         }
 
@@ -180,6 +190,20 @@ public class DataService {
 
     private LocalDate parseDate(String dateString) {
         return LocalDateTime.parse(dateString, DateTimeFormatter.ISO_DATE_TIME).toLocalDate();
+    }
+
+    private List<Double> convertDurations(List<Long> durations) {
+
+        List<Double> convertedDurations = new LinkedList<>();
+
+        for(long l : durations) {
+
+            Double d = BigDecimal.valueOf(l / 60.0).setScale(2, RoundingMode.HALF_UP).doubleValue();
+            convertedDurations.add(d);
+        }
+
+        return convertedDurations;
+
     }
 
 }

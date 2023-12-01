@@ -24,8 +24,8 @@ public class DurationHandler {
     public DataResponse<String, Long> fetchDurationByDay(LocalDate startDate, LocalDate endDate) {
 
         List<String> series = new LinkedList<>();
-        series.add("Duration Running (seconds)");
-        series.add("Duration Walking (seconds)");
+        series.add("Duration Running (Minutes)");
+        series.add("Duration Walking (Minutes)");
 
         List<LocalDate> days = getDaysBetween(startDate, endDate);
         List<String> dates = new LinkedList<>();
@@ -56,8 +56,8 @@ public class DurationHandler {
     public DataResponse<String, Long> fetchDurationByWeek(LocalDate startDate, LocalDate endDate) {
 
         List<String> series = new LinkedList<>();
-        series.add("Duration Running (seconds)");
-        series.add("Duration Walking (seconds)");
+        series.add("Duration Running (Minutes)");
+        series.add("Duration Walking (Minutes)");
 
         List<String> dates = new LinkedList<>();
 
@@ -97,8 +97,8 @@ public class DurationHandler {
     public DataResponse<String, Long> fetchDurationByMonth(LocalDate startDate, LocalDate endDate) {
 
         List<String> series = new LinkedList<>();
-        series.add("Duration Running (seconds)");
-        series.add("Duration Walking (seconds)");
+        series.add("Duration Running (Minutes)");
+        series.add("Duration Walking (Minutes)");
 
         List<String> dates = new LinkedList<>();
 
