@@ -45,8 +45,8 @@ public class DistanceHandler {
                                                        String gender) {
 
         List<String> series = new LinkedList<>();
-        series.add("Distance Running (meters)");
-        series.add("Distance Walking (meters)");
+        series.add("Distance Running (Km)");
+        series.add("Distance Walking (Km)");
 
 
         List<Double> distanceWalking = new LinkedList<>();
@@ -57,13 +57,13 @@ public class DistanceHandler {
 
         for(long duration : response.getInformationRunning()) {
 
-            distanceRunning.add(BigDecimal.valueOf(calculateDistanceMeters(velocityRunning, duration))
+            distanceRunning.add(BigDecimal.valueOf(calculateDistanceKM(velocityRunning, duration))
                     .setScale(2, RoundingMode.HALF_UP).doubleValue());
 
         }
 
         for(long duration : response.getInformationWalking()) {
-            distanceWalking.add(BigDecimal.valueOf(calculateDistanceMeters(velocityWalking, duration))
+            distanceWalking.add(BigDecimal.valueOf(calculateDistanceKM(velocityWalking, duration))
                     .setScale(2, RoundingMode.HALF_UP).doubleValue());
         }
 
@@ -71,8 +71,8 @@ public class DistanceHandler {
 
     }
 
-    private double calculateDistanceMeters(double velocity, long durationInSeconds) {
-        return velocity * durationInSeconds;
+    private double calculateDistanceKM(double velocity, long durationInSeconds) {
+        return (velocity * durationInSeconds) / 1000;
     }
 
 }
