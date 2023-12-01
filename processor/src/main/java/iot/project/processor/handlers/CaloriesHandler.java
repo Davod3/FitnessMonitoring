@@ -47,6 +47,10 @@ public class CaloriesHandler {
     private DataResponse<String, Double> fetchCalories(DataResponse<String, Long> response, int age,
                                                                  double height, double weight, String gender) {
 
+        List<String> series = new LinkedList<>();
+        series.add("Calories Burned Running (Kcal)");
+        series.add("Calories Burned Walking (Kcal)");
+
         List<Double> caloriesWalking = new LinkedList<>();
         List<Double> caloriesRunning = new LinkedList<>();
 
@@ -69,7 +73,7 @@ public class CaloriesHandler {
             caloriesRunning.add(durationInMinutes * avgCaloriesRunning);
         }
 
-        return new DataResponse<String, Double>(response.getDates(), caloriesRunning, caloriesWalking);
+        return new DataResponse<String, Double>(response.getDates(), caloriesRunning, caloriesWalking, series);
 
     }
 

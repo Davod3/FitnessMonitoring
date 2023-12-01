@@ -38,19 +38,19 @@ public class DataService {
 
             DataResponse<String, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
                     parsedEndDate);
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
             DataResponse<String, Long> r = this.dataHandler.fetchDurationByWeek(parsedStartDate,
                     parsedEndDate);
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
             DataResponse<String, Long> r = this.dataHandler.fetchDurationByMonth(parsedStartDate,
                     parsedEndDate);
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         }
 
@@ -69,19 +69,19 @@ public class DataService {
 
             DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByDay(parsedStartDate, parsedEndDate, request.getAge(),
                     request.getHeight(), request.getWeight(), request.getGender());
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
             DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByWeek(parsedStartDate, parsedEndDate, request.getAge(),
                     request.getHeight(), request.getWeight(), request.getGender());
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
             DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByMonth(parsedStartDate, parsedEndDate, request.getAge(),
                     request.getHeight(), request.getWeight(), request.getGender());
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         }
 
@@ -101,21 +101,21 @@ public class DataService {
             DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByDay(parsedStartDate,
                     parsedEndDate, request.getAge(), request.getGender());
 
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
             DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByWeek(parsedStartDate,
                     parsedEndDate, request.getAge(), request.getGender());
 
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
             DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByMonth(parsedStartDate,
                     parsedEndDate, request.getAge(), request.getGender());
 
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         }
 
@@ -134,21 +134,21 @@ public class DataService {
             DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByDay(parsedStartDate, parsedEndDate,
                     request.getWalking_threshold(), request.getRunning_threshold());
 
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
             DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByWeek(parsedStartDate, parsedEndDate,
                     request.getWalking_threshold(), request.getRunning_threshold());
 
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
             DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByMonth(parsedStartDate, parsedEndDate,
                     request.getWalking_threshold(), request.getRunning_threshold());
 
-            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         }
 
@@ -156,12 +156,7 @@ public class DataService {
 
     }
 
-    private <T,O> DataResponseDTO dtofy(List<T> dates, List<O> runningInformation, List<O> walkingInformation) {
-
-        List<String> series = new LinkedList<>();
-
-        series.add("Running");
-        series.add("Walking");
+    private <T,O> DataResponseDTO dtofy(List<T> dates, List<O> runningInformation, List<O> walkingInformation, List<String> series) {
 
         List<String> runningDurations = new LinkedList<>();
 

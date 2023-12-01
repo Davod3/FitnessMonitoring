@@ -42,6 +42,10 @@ public class DistanceHandler {
     private DataResponse<String, Double> fetchDistance(DataResponse<String, Long> response, int age,
                                                        String gender) {
 
+        List<String> series = new LinkedList<>();
+        series.add("Distance Running (meters)");
+        series.add("Distance Walking (meters)");
+
 
         List<Double> distanceWalking = new LinkedList<>();
         List<Double> distanceRunning = new LinkedList<>();
@@ -59,7 +63,7 @@ public class DistanceHandler {
             distanceWalking.add(calculateDistanceMeters(velocityWalking, duration));
         }
 
-        return new DataResponse<String, Double>(response.getDates(), distanceRunning, distanceWalking);
+        return new DataResponse<String, Double>(response.getDates(), distanceRunning, distanceWalking, series);
 
     }
 

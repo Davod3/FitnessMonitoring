@@ -48,6 +48,11 @@ public class ActivityLevelHandler {
     private DataResponse<String, Integer> fetchActivityLevel(DataResponse<String, Long> durations, double thresholdWalking,
                                                              double thresholdRunning, int multiplier) {
 
+        List<String> series = new LinkedList<>();
+
+        series.add("Active");
+        series.add("Sedentary");
+
         List<Integer> activeDates = new LinkedList<>();
         List<Integer> sedentaryDates = new LinkedList<>();
 
@@ -69,7 +74,7 @@ public class ActivityLevelHandler {
         }
 
 
-        return new DataResponse<String, Integer>(durations.getDates(), activeDates, sedentaryDates);
+        return new DataResponse<String, Integer>(durations.getDates(), activeDates, sedentaryDates, series);
 
     }
 
