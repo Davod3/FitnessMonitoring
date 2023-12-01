@@ -818,7 +818,7 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "CreateRequest",
-        "func": "var dataPeriod = flow.get('period');\nvar end_date = flow.get('end_date');\nvar start_date = flow.get('start_date');\nvar age = global.get('age');\nvar height = global.get('height');\nvar weight = global.get('weight');\nvar gender = global.get('gender');\nvar walkingThreshold = global.get('walkingThreshold');\nvar runningThreshold = global.get('runningThreshold');\n\nvar isValid = true;\n\nif(dataPeriod === undefined) {\n    dataPeriod = 'day';\n}\n\nif(start_date === undefined || end_date === undefined) {\n    isValid = false;\n    return {payload : null};\n}\n\n//Handle start data after end data\n\nif(age === undefined){\n    age = 21;\n}\n\nif(height === undefined){\n    height = 170;\n}\n\nif(weight === undefined){\n    weight = 50;\n}\n\nif(gender === undefined) {\n    gender = 'male';\n}\n\nif(walkingThreshold === undefined) {\n    walkingThreshold = 30;\n}\n\nif(runningThreshold === undefined) {\n    runningThreshold = 10;\n}\n\nvar newMsg = {\n    payload : {\n        dataPeriod : dataPeriod,\n        start_date : start_date,\n        end_date : end_date,\n        age : age,\n        height : height,\n        weight : weight,\n        gender : gender,\n        walking_threshold : walkingThreshold,\n        running_threshold : runningThreshold\n    }\n};\n\n\nreturn newMsg; //newMsg;",
+        "func": "var dataPeriod = flow.get('period');\nvar end_date = flow.get('end_date');\nvar start_date = flow.get('start_date');\nvar age = global.get('age');\nvar height = global.get('height');\nvar weight = global.get('weight');\nvar gender = global.get('gender');\nvar walkingThreshold = global.get('walkingThreshold');\nvar runningThreshold = global.get('runningThreshold');\n\nvar isValid = true;\n\nif(dataPeriod === undefined) {\n    dataPeriod = 'day';\n}\n\nif(start_date === undefined || end_date === undefined) {\n    isValid = false;\n    return {payload : 'Error: Please select start and end dates!'};\n}\n\nif(new Date(start_date) > new Date(end_date)) {\n    isValid = false;\n    return {payload : 'Error: Start date must be before End date!'};\n}\n\n//Handle start data after end data\n\nif(age === undefined){\n    age = 21;\n}\n\nif(height === undefined){\n    height = 170;\n}\n\nif(weight === undefined){\n    weight = 50;\n}\n\nif(gender === undefined) {\n    gender = 'male';\n}\n\nif(walkingThreshold === undefined) {\n    walkingThreshold = 30;\n}\n\nif(runningThreshold === undefined) {\n    runningThreshold = 10;\n}\n\nvar newMsg = {\n    payload : {\n        dataPeriod : dataPeriod,\n        start_date : start_date,\n        end_date : end_date,\n        age : age,\n        height : height,\n        weight : weight,\n        gender : gender,\n        walking_threshold : walkingThreshold,\n        running_threshold : runningThreshold\n    }\n};\n\n\nreturn newMsg; //newMsg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -834,23 +834,6 @@
         ]
     },
     {
-        "id": "42658e4f0486cbc1",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "isNull",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 970,
-        "y": 60,
-        "wires": []
-    },
-    {
         "id": "2f6a671a6a3be3c6",
         "type": "switch",
         "z": "f6f2187d.f17ca8",
@@ -859,10 +842,12 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "null"
+                "t": "cont",
+                "v": "Error",
+                "vt": "str"
             },
             {
-                "t": "nnull"
+                "t": "else"
             }
         ],
         "checkall": "false",
@@ -872,7 +857,7 @@
         "y": 300,
         "wires": [
             [
-                "42658e4f0486cbc1"
+                "174623ae06df9223"
             ],
             [
                 "c0bc66eb40920bfe",
@@ -1061,6 +1046,25 @@
                 "20e2124887c2d9ae"
             ]
         ]
+    },
+    {
+        "id": "174623ae06df9223",
+        "type": "ui_toast",
+        "z": "f6f2187d.f17ca8",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1070,
+        "y": 100,
+        "wires": []
     },
     {
         "id": "fb6c935414224f8a",
