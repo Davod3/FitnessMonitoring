@@ -7,6 +7,14 @@
         "info": ""
     },
     {
+        "id": "bbe70953285e276c",
+        "type": "tab",
+        "label": "Settings",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
         "id": "037aecdc6926ce9a",
         "type": "mqtt-broker",
         "name": "IdC",
@@ -278,6 +286,86 @@
         "height": 1
     },
     {
+        "id": "ee4fe73eb21664d5",
+        "type": "ui_tab",
+        "name": "Settings",
+        "icon": "dashboard",
+        "order": 3,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "95926c1d8c715b2d",
+        "type": "ui_group",
+        "name": "Settings",
+        "tab": "ee4fe73eb21664d5",
+        "order": 1,
+        "disp": true,
+        "width": 13,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "67f548e5d31b33f9",
+        "type": "ui_spacer",
+        "z": "bbe70953285e276c",
+        "name": "spacer",
+        "group": "95926c1d8c715b2d",
+        "order": 2,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "02585f8c77980fc7",
+        "type": "ui_spacer",
+        "z": "bbe70953285e276c",
+        "name": "spacer",
+        "group": "95926c1d8c715b2d",
+        "order": 5,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "3a0a33c548920f42",
+        "type": "ui_spacer",
+        "z": "bbe70953285e276c",
+        "name": "spacer",
+        "group": "95926c1d8c715b2d",
+        "order": 8,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "3e77e39546bcd4f4",
+        "type": "ui_spacer",
+        "z": "bbe70953285e276c",
+        "name": "spacer",
+        "group": "95926c1d8c715b2d",
+        "order": 11,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "c20c67c922571ec8",
+        "type": "ui_spacer",
+        "z": "bbe70953285e276c",
+        "name": "spacer",
+        "group": "95926c1d8c715b2d",
+        "order": 14,
+        "width": 1,
+        "height": 1
+    },
+    {
+        "id": "4dc322915e9d125c",
+        "type": "ui_spacer",
+        "z": "bbe70953285e276c",
+        "name": "spacer",
+        "group": "95926c1d8c715b2d",
+        "order": 17,
+        "width": 1,
+        "height": 1
+    },
+    {
         "id": "df924a2577f12739",
         "type": "ui_chart",
         "z": "f6f2187d.f17ca8",
@@ -303,8 +391,8 @@
         "useUTC": false,
         "colors": [
             "#1f77b4",
-            "#aec7e8",
             "#ff7f0e",
+            "#b30fff",
             "#2ca02c",
             "#98df8a",
             "#d62728",
@@ -315,8 +403,8 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1390,
-        "y": 280,
+        "x": 1710,
+        "y": 220,
         "wires": [
             []
         ]
@@ -615,11 +703,11 @@
         "id": "fc88a607928f1d2c",
         "type": "http request",
         "z": "f6f2187d.f17ca8",
-        "name": "Fetch Data",
+        "name": "Fetch Duration",
         "method": "POST",
         "ret": "obj",
         "paytoqs": "body",
-        "url": "http://172.100.10.14:8080/data",
+        "url": "http://172.100.10.14:8080/duration",
         "tls": "",
         "persist": false,
         "proxy": "",
@@ -627,8 +715,8 @@
         "authType": "",
         "senderr": false,
         "headers": [],
-        "x": 1030,
-        "y": 400,
+        "x": 1260,
+        "y": 240,
         "wires": [
             [
                 "20e2124887c2d9ae"
@@ -730,7 +818,7 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "CreateRequest",
-        "func": "var dataType = flow.get('dataType');\nvar dataPeriod = flow.get('period');\nvar end_date = flow.get('end_date');\nvar start_date = flow.get('start_date');\n\nvar isValid = true;\n\nif(dataType === undefined) {\n    dataType = 'duration';\n}\n\nif(dataPeriod === undefined) {\n    dataPeriod = 'day';\n}\n\nif(start_date === undefined || end_date === undefined) {\n    isValid = false;\n    return {payload : null};\n}\n\n//Handle start data after end data\n\nvar newMsg = {\n    payload : {\n        dataType : dataType,\n        dataPeriod : dataPeriod,\n        start_date : start_date,\n        end_date : end_date\n    }\n};\n\n\nreturn newMsg; //newMsg;",
+        "func": "var dataPeriod = flow.get('period');\nvar end_date = flow.get('end_date');\nvar start_date = flow.get('start_date');\nvar age = global.get('age');\nvar height = global.get('height');\nvar weight = global.get('weight');\nvar gender = global.get('gender');\nvar walkingThreshold = global.get('walkingThreshold');\nvar runningThreshold = global.get('runningThreshold');\n\nvar isValid = true;\n\nif(dataPeriod === undefined) {\n    dataPeriod = 'day';\n}\n\nif(start_date === undefined || end_date === undefined) {\n    isValid = false;\n    return {payload : null};\n}\n\n//Handle start data after end data\n\nif(age === undefined){\n    age = 21;\n}\n\nif(height === undefined){\n    height = 170;\n}\n\nif(weight === undefined){\n    weight = 50;\n}\n\nif(gender === undefined) {\n    gender = 'male';\n}\n\nif(walkingThreshold === undefined) {\n    walkingThreshold = 30;\n}\n\nif(runningThreshold === undefined) {\n    runningThreshold = 10;\n}\n\nvar newMsg = {\n    payload : {\n        dataPeriod : dataPeriod,\n        start_date : start_date,\n        end_date : end_date,\n        age : age,\n        height : height,\n        weight : weight,\n        gender : gender,\n        walking_threshold : walkingThreshold,\n        running_threshold : runningThreshold\n    }\n};\n\n\nreturn newMsg; //newMsg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -750,7 +838,7 @@
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "isNull",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -758,8 +846,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1030,
-        "y": 140,
+        "x": 970,
+        "y": 60,
         "wires": []
     },
     {
@@ -780,15 +868,15 @@
         "checkall": "false",
         "repair": false,
         "outputs": 2,
-        "x": 870,
+        "x": 850,
         "y": 300,
         "wires": [
             [
                 "42658e4f0486cbc1"
             ],
             [
-                "fc88a607928f1d2c",
-                "c0bc66eb40920bfe"
+                "c0bc66eb40920bfe",
+                "b574ce530adf53fa"
             ]
         ]
     },
@@ -806,7 +894,7 @@
         "statusVal": "",
         "statusType": "auto",
         "x": 1090,
-        "y": 200,
+        "y": 160,
         "wires": []
     },
     {
@@ -822,28 +910,613 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1400,
-        "y": 400,
+        "x": 1720,
+        "y": 300,
         "wires": []
     },
     {
         "id": "20e2124887c2d9ae",
         "type": "function",
         "z": "f6f2187d.f17ca8",
-        "name": "ParseRequest",
-        "func": "\nvar newMsg = {payload : [msg.payload]};\n\nreturn newMsg;",
+        "name": "ParseResponse",
+        "func": "var newMsg = {payload : [msg.payload]};\n\nreturn newMsg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1220,
-        "y": 320,
+        "x": 1500,
+        "y": 300,
         "wires": [
             [
                 "24a77358085c8c36",
                 "df924a2577f12739"
+            ]
+        ]
+    },
+    {
+        "id": "b574ce530adf53fa",
+        "type": "switch",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "property": "dataType",
+        "propertyType": "flow",
+        "rules": [
+            {
+                "t": "null"
+            },
+            {
+                "t": "eq",
+                "v": "duration",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "calories",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "distance",
+                "vt": "str"
+            },
+            {
+                "t": "eq",
+                "v": "activity_level",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 5,
+        "x": 1050,
+        "y": 320,
+        "wires": [
+            [
+                "fc88a607928f1d2c"
+            ],
+            [
+                "fc88a607928f1d2c"
+            ],
+            [
+                "c46e0c370921b1eb"
+            ],
+            [
+                "f63f744f83e6c175"
+            ],
+            [
+                "65d75cb7c39d454d"
+            ]
+        ]
+    },
+    {
+        "id": "c46e0c370921b1eb",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "Fetch Calories",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://172.100.10.14:8080/calories",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1260,
+        "y": 300,
+        "wires": [
+            [
+                "20e2124887c2d9ae"
+            ]
+        ]
+    },
+    {
+        "id": "f63f744f83e6c175",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "Fetch Distance",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://172.100.10.14:8080/distance",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1260,
+        "y": 360,
+        "wires": [
+            [
+                "20e2124887c2d9ae"
+            ]
+        ]
+    },
+    {
+        "id": "65d75cb7c39d454d",
+        "type": "http request",
+        "z": "f6f2187d.f17ca8",
+        "name": "Fetch Activity Level",
+        "method": "POST",
+        "ret": "obj",
+        "paytoqs": "body",
+        "url": "http://172.100.10.14:8080/activitylevel",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "",
+        "senderr": false,
+        "headers": [],
+        "x": 1270,
+        "y": 420,
+        "wires": [
+            [
+                "20e2124887c2d9ae"
+            ]
+        ]
+    },
+    {
+        "id": "fb6c935414224f8a",
+        "type": "ui_text_input",
+        "z": "bbe70953285e276c",
+        "name": "Weight",
+        "label": "Weight(Kg)",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 9,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "mode": "number",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "msg",
+        "x": 330,
+        "y": 240,
+        "wires": [
+            [
+                "28505c38d0f5cd49"
+            ]
+        ]
+    },
+    {
+        "id": "927552e0ae2823a1",
+        "type": "ui_text_input",
+        "z": "bbe70953285e276c",
+        "name": "Height",
+        "label": "Height(Cm)",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 6,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "mode": "number",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "msg",
+        "x": 330,
+        "y": 380,
+        "wires": [
+            [
+                "58d39a571356d9c3"
+            ]
+        ]
+    },
+    {
+        "id": "c4d7a7d74bf09805",
+        "type": "ui_dropdown",
+        "z": "bbe70953285e276c",
+        "name": "Gender",
+        "label": "Gender",
+        "tooltip": "",
+        "place": "Select option",
+        "group": "95926c1d8c715b2d",
+        "order": 18,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "",
+                "value": "Male",
+                "type": "str"
+            },
+            {
+                "label": "",
+                "value": "Female",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "topic",
+        "topicType": "msg",
+        "className": "",
+        "x": 320,
+        "y": 520,
+        "wires": [
+            [
+                "44449b3cecd3031c"
+            ]
+        ]
+    },
+    {
+        "id": "58b246dda7e0bb29",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "name": "Age",
+        "label": "Age",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 790,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "b961f60963445434",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 7,
+        "width": 6,
+        "height": 1,
+        "name": "Weight",
+        "label": "Weight(Kg)",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 790,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "37a29ebcf01a344e",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 4,
+        "width": 6,
+        "height": 1,
+        "name": "Height",
+        "label": "Height(Cm)",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 790,
+        "y": 380,
+        "wires": []
+    },
+    {
+        "id": "8c8d1b3b518aea6a",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 16,
+        "width": 6,
+        "height": 1,
+        "name": "Gender",
+        "label": "Gender",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 800,
+        "y": 520,
+        "wires": []
+    },
+    {
+        "id": "cdbc5cf51299d1cb",
+        "type": "ui_numeric",
+        "z": "bbe70953285e276c",
+        "name": "Age",
+        "label": "Age",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 3,
+        "width": 6,
+        "height": 1,
+        "wrap": true,
+        "passthru": true,
+        "topic": "topic",
+        "topicType": "msg",
+        "format": "{{value}}",
+        "min": "1",
+        "max": "150",
+        "step": 1,
+        "className": "",
+        "x": 330,
+        "y": 100,
+        "wires": [
+            [
+                "4e707313783b208c"
+            ]
+        ]
+    },
+    {
+        "id": "4e707313783b208c",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalAge",
+        "rules": [
+            {
+                "t": "set",
+                "p": "age",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 100,
+        "wires": [
+            [
+                "58b246dda7e0bb29"
+            ]
+        ]
+    },
+    {
+        "id": "28505c38d0f5cd49",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalWeight",
+        "rules": [
+            {
+                "t": "set",
+                "p": "weight",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 240,
+        "wires": [
+            [
+                "b961f60963445434"
+            ]
+        ]
+    },
+    {
+        "id": "58d39a571356d9c3",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalHeight",
+        "rules": [
+            {
+                "t": "set",
+                "p": "height",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 560,
+        "y": 380,
+        "wires": [
+            [
+                "37a29ebcf01a344e"
+            ]
+        ]
+    },
+    {
+        "id": "44449b3cecd3031c",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalGender",
+        "rules": [
+            {
+                "t": "set",
+                "p": "gender",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 570,
+        "y": 520,
+        "wires": [
+            [
+                "8c8d1b3b518aea6a"
+            ]
+        ]
+    },
+    {
+        "id": "a5792951deb32e8d",
+        "type": "ui_text_input",
+        "z": "bbe70953285e276c",
+        "name": "Active Threshold Walking",
+        "label": "Active Threshold Walking (minutes)",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 12,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "mode": "number",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "msg",
+        "x": 370,
+        "y": 620,
+        "wires": [
+            [
+                "374cf2cae478d0cb"
+            ]
+        ]
+    },
+    {
+        "id": "dbaa3e316e7b7295",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 10,
+        "width": 6,
+        "height": 1,
+        "name": "Walking Threshold",
+        "label": "Active Threshold Walking (minutes)",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 910,
+        "y": 620,
+        "wires": []
+    },
+    {
+        "id": "374cf2cae478d0cb",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalWalkingThreshold",
+        "rules": [
+            {
+                "t": "set",
+                "p": "walkingThreshold",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 620,
+        "wires": [
+            [
+                "dbaa3e316e7b7295"
+            ]
+        ]
+    },
+    {
+        "id": "51da4f86abe6d194",
+        "type": "ui_text_input",
+        "z": "bbe70953285e276c",
+        "name": "Active Threshold Running",
+        "label": "Active Threshold Running (minutes)",
+        "tooltip": "",
+        "group": "95926c1d8c715b2d",
+        "order": 15,
+        "width": 6,
+        "height": 1,
+        "passthru": false,
+        "mode": "number",
+        "delay": 300,
+        "topic": "topic",
+        "sendOnBlur": false,
+        "className": "",
+        "topicType": "msg",
+        "x": 370,
+        "y": 720,
+        "wires": [
+            [
+                "82f5970583f860fb"
+            ]
+        ]
+    },
+    {
+        "id": "a429839a2a8831c4",
+        "type": "ui_text",
+        "z": "bbe70953285e276c",
+        "group": "95926c1d8c715b2d",
+        "order": 13,
+        "width": 6,
+        "height": 1,
+        "name": "Running Threshold",
+        "label": "Active Threshold Running (minutes)",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 910,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "82f5970583f860fb",
+        "type": "change",
+        "z": "bbe70953285e276c",
+        "name": "setGlobalRunningThreshold",
+        "rules": [
+            {
+                "t": "set",
+                "p": "runningThreshold",
+                "pt": "global",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 660,
+        "y": 720,
+        "wires": [
+            [
+                "a429839a2a8831c4"
             ]
         ]
     }
