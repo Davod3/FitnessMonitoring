@@ -369,12 +369,12 @@
         "id": "df924a2577f12739",
         "type": "ui_chart",
         "z": "f6f2187d.f17ca8",
-        "name": "",
+        "name": "Data Display",
         "group": "e34fc22e9331f514",
         "order": 7,
         "width": 16,
         "height": 5,
-        "label": "Data",
+        "label": "{{label}}",
         "chartType": "bar",
         "legend": "true",
         "xformat": "HH:mm:ss",
@@ -403,7 +403,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1710,
+        "x": 1750,
         "y": 220,
         "wires": [
             []
@@ -425,7 +425,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "duration",
+        "payload": "Duration",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "str",
@@ -453,7 +453,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "distance",
+        "payload": "Distance",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -481,7 +481,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "calories",
+        "payload": "Calories",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -509,7 +509,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "activity_level",
+        "payload": "Activity Level",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -902,7 +902,7 @@
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "Response",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -910,8 +910,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1720,
-        "y": 300,
+        "x": 1740,
+        "y": 400,
         "wires": []
     },
     {
@@ -919,15 +919,15 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "ParseResponse",
-        "func": "var newMsg = {payload : [msg.payload]};\n\nreturn newMsg;",
+        "func": "var dataType = flow.get('dataType');\nvar period = flow.get('period');\nvar startDate = String(flow.get('start_date')).split('T')[0];\nvar endDate = String(flow.get('end_date')).split('T')[0];\n\nvar label = String(dataType) + \" per \" + String(period) + \": \" + startDate + \" -- \" + endDate;\n\nvar newMsg = {payload : [msg.payload], label : label};\n\nreturn newMsg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1500,
-        "y": 300,
+        "x": 1540,
+        "y": 320,
         "wires": [
             [
                 "24a77358085c8c36",
@@ -948,22 +948,22 @@
             },
             {
                 "t": "eq",
-                "v": "duration",
+                "v": "Duration",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "calories",
+                "v": "Calories",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "distance",
+                "v": "Distance",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "activity_level",
+                "v": "Activity Level",
                 "vt": "str"
             }
         ],
