@@ -1,7 +1,10 @@
 package iot.project.processor.services;
 
 import iot.project.processor.dtos.*;
+import iot.project.processor.handlers.ActivityLevelHandler;
+import iot.project.processor.handlers.CaloriesHandler;
 import iot.project.processor.handlers.DataHandler;
+import iot.project.processor.handlers.DistanceHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -20,96 +23,140 @@ import java.util.Map;
 public class DataService {
 
     @Autowired private DataHandler dataHandler;
+    @Autowired private CaloriesHandler caloriesHandler;
+    @Autowired private DistanceHandler distanceHandler;
+    @Autowired private ActivityLevelHandler activityHandler;
 
-    public DataResponseDTO fetchData(DataRequestDTO request) {
+    public DataResponseDTO fetchDuration(DataRequestDTO request) {
 
-        String dataType = request.getDataType();
         String dataPeriod = request.getDataPeriod();
 
         LocalDate parsedStartDate = parseDate(request.getStart_date());
         LocalDate parsedEndDate = parseDate(request.getEnd_date());
 
-        if(dataType.equalsIgnoreCase(DataType.DURATION.toString())) {
+        if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-                if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
+            DataResponse<String, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
+                    parsedEndDate);
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByDay(parsedStartDate,
-                            parsedEndDate);
-                    return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
+            DataResponse<String, Long> r = this.dataHandler.fetchDurationByWeek(parsedStartDate,
+                    parsedEndDate);
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-                    DataResponse<LocalDate, Long> r = this.dataHandler.fetchDurationByWeek(parsedStartDate,
-                            parsedEndDate);
-                    return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-                } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
+            DataResponse<String, Long> r = this.dataHandler.fetchDurationByMonth(parsedStartDate,
+                    parsedEndDate);
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-                   DataResponse<String, Long> r = this.dataHandler.fetchDurationByMonth(parsedStartDate,
-                           parsedEndDate);
-                   return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking());
+        }
 
-                }
+        return null;
 
-        } else if (dataType.equalsIgnoreCase(DataType.CALORIES.toString())) {
+    }
 
-            if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
+    public DataResponseDTO fetchCalories(DataRequestDTO request) {
 
-                this.dataHandler.fetchCaloriesByDay();
+        String dataPeriod = request.getDataPeriod();
 
-            } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
+        LocalDate parsedStartDate = parseDate(request.getStart_date());
+        LocalDate parsedEndDate = parseDate(request.getEnd_date());
 
-                this.dataHandler.fetchCaloriesByWeek();
+        if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-            } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
+            DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByDay(parsedStartDate, parsedEndDate, request.getAge(),
+                    request.getHeight(), request.getWeight(), request.getGender());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-                this.dataHandler.fetchCaloriesByMonth();
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-            }
+            DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByWeek(parsedStartDate, parsedEndDate, request.getAge(),
+                    request.getHeight(), request.getWeight(), request.getGender());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-        } else if (dataType.equalsIgnoreCase(DataType.DISTANCE.toString())) {
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-            if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
+            DataResponse<String, Double> r = this.caloriesHandler.fetchCaloriesByMonth(parsedStartDate, parsedEndDate, request.getAge(),
+                    request.getHeight(), request.getWeight(), request.getGender());
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-                this.dataHandler.fetchDistanceByDay();
+        }
 
-            } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
+        return null;
 
-                this.dataHandler.fetchDistanceByWeek();
+    }
 
-            } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
+    public DataResponseDTO fetchDistance(DataRequestDTO request) {
 
-                this.dataHandler.fetchDistanceByMonth();
+        String dataPeriod = request.getDataPeriod();
 
-            }
+        LocalDate parsedStartDate = parseDate(request.getStart_date());
+        LocalDate parsedEndDate = parseDate(request.getEnd_date());
 
-        } else if (dataType.equalsIgnoreCase(DataType.ACTIVITY_LEVEL.toString())) {
+        if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
 
-            if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
+            DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByDay(parsedStartDate,
+                    parsedEndDate, request.getAge(), request.getGender());
 
-                this.dataHandler.fetchActivityLevelByDay();
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-            } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
 
-                this.dataHandler.fetchActivityLevelByWeek();
+            DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByWeek(parsedStartDate,
+                    parsedEndDate, request.getAge(), request.getGender());
 
-            } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
-                this.dataHandler.fetchActivityLevelByMonth();
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
 
-            }
+            DataResponse<String, Double> r = this.distanceHandler.fetchDistanceByMonth(parsedStartDate,
+                    parsedEndDate, request.getAge(), request.getGender());
+
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
 
         }
 
         return null;
     }
 
-    private <T,O> DataResponseDTO dtofy(List<T> dates, List<O> runningInformation, List<O> walkingInformation) {
+    public DataResponseDTO fetchActivityLevel(DataRequestDTO request) {
 
-        List<String> series = new LinkedList<>();
+        String dataPeriod = request.getDataPeriod();
 
-        series.add("Running");
-        series.add("Walking");
+        LocalDate parsedStartDate = parseDate(request.getStart_date());
+        LocalDate parsedEndDate = parseDate(request.getEnd_date());
+
+        if(dataPeriod.equalsIgnoreCase(DataPeriod.DAY.toString())) {
+
+            DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByDay(parsedStartDate, parsedEndDate,
+                    request.getWalking_threshold(), request.getRunning_threshold());
+
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
+
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.WEEK.toString())) {
+
+            DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByWeek(parsedStartDate, parsedEndDate,
+                    request.getWalking_threshold(), request.getRunning_threshold());
+
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
+
+        } else if (dataPeriod.equalsIgnoreCase(DataPeriod.MONTH.toString())) {
+
+            DataResponse<String, Integer> r = this.activityHandler.fetchActivityLevelByMonth(parsedStartDate, parsedEndDate,
+                    request.getWalking_threshold(), request.getRunning_threshold());
+
+            return dtofy(r.getDates(), r.getInformationRunning(), r.getInformationWalking(), r.getSeries());
+
+        }
+
+        return null;
+
+    }
+
+    private <T,O> DataResponseDTO dtofy(List<T> dates, List<O> runningInformation, List<O> walkingInformation, List<String> series) {
 
         List<String> runningDurations = new LinkedList<>();
 
