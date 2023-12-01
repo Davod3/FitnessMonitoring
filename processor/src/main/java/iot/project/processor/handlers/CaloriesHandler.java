@@ -5,6 +5,8 @@ import iot.project.processor.utils.VelocityCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +64,8 @@ public class CaloriesHandler {
 
             double durationInMinutes = o / 60.0;
 
-            caloriesWalking.add(durationInMinutes * avgCaloriesWalking);
+            caloriesWalking.add(BigDecimal.valueOf(durationInMinutes * avgCaloriesWalking)
+                            .setScale(2, RoundingMode.HALF_UP).doubleValue());
 
         }
 
@@ -70,7 +73,8 @@ public class CaloriesHandler {
 
             double durationInMinutes = l / 60.0;
 
-            caloriesRunning.add(durationInMinutes * avgCaloriesRunning);
+            caloriesRunning.add(BigDecimal.valueOf(durationInMinutes * avgCaloriesRunning)
+                            .setScale(2, RoundingMode.HALF_UP).doubleValue());
         }
 
         return new DataResponse<String, Double>(response.getDates(), caloriesRunning, caloriesWalking, series);

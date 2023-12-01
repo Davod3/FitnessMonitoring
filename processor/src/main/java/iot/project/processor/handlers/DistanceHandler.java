@@ -5,6 +5,8 @@ import iot.project.processor.utils.VelocityCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,12 +57,14 @@ public class DistanceHandler {
 
         for(long duration : response.getInformationRunning()) {
 
-            distanceRunning.add(calculateDistanceMeters(velocityRunning, duration));
+            distanceRunning.add(BigDecimal.valueOf(calculateDistanceMeters(velocityRunning, duration))
+                    .setScale(2, RoundingMode.HALF_UP).doubleValue());
 
         }
 
         for(long duration : response.getInformationWalking()) {
-            distanceWalking.add(calculateDistanceMeters(velocityWalking, duration));
+            distanceWalking.add(BigDecimal.valueOf(calculateDistanceMeters(velocityWalking, duration))
+                    .setScale(2, RoundingMode.HALF_UP).doubleValue());
         }
 
         return new DataResponse<String, Double>(response.getDates(), distanceRunning, distanceWalking, series);
