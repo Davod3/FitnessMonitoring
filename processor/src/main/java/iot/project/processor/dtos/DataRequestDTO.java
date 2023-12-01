@@ -2,7 +2,6 @@ package iot.project.processor.dtos;
 
 public class DataRequestDTO {
 
-    private String dataType;
     private String dataPeriod;
     private String start_date;
     private String end_date;
@@ -13,11 +12,10 @@ public class DataRequestDTO {
     private double walking_threshold;
     private double running_threshold;
 
-    public DataRequestDTO(String dataType, String dataPeriod, String start_date, String end_date, int age,
+    public DataRequestDTO(String dataPeriod, String start_date, String end_date, int age,
                           double height, double weight, String gender, double walking_threshold,
                           double running_threshold) {
 
-        this.dataType = dataType;
         this.dataPeriod = dataPeriod;
         this.start_date = start_date;
         this.end_date = end_date;
@@ -28,14 +26,6 @@ public class DataRequestDTO {
         this.walking_threshold = walking_threshold;
         this.running_threshold = running_threshold;
 
-    }
-
-    public String getDataType() {
-        return dataType;
-    }
-
-    public void setDataType(String dataType) {
-        this.dataType = dataType;
     }
 
     public String getDataPeriod() {
