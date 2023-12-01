@@ -1,6 +1,7 @@
 package iot.project.processor.handlers;
 
 import iot.project.processor.dtos.DataResponse;
+import iot.project.processor.entities.ProcessedUserData;
 import iot.project.processor.entities.Week;
 import iot.project.processor.repositories.SavedUserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class DurationHandler {
@@ -25,23 +27,27 @@ public class DurationHandler {
         series.add("Duration Running (seconds)");
         series.add("Duration Walking (seconds)");
 
-
+        List<LocalDate> days = getDaysBetween(startDate, endDate);
         List<String> dates = new LinkedList<>();
 
         List<Long> durationsRunning = new LinkedList<>();
         List<Long> durationsWalking = new LinkedList<>();
 
+        for(LocalDate d : days) {
 
-        //Get all data from db between these 2 days
-        this.userDataRepo.findBetweenStartEnd(startDate, endDate).stream().forEach( data -> {
+            dates.add(d.toString());
 
-            dates.add(data.getDate().toString());
+            ProcessedUserData data = this.userDataRepo.findByDate(d);
 
-            durationsRunning.add(data.getRunningDuration());
-            durationsWalking.add(data.getWalkingDuration());
+            if(data == null) {
+                durationsRunning.add(0L);
+                durationsWalking.add(0L);
+            } else {
+                durationsRunning.add(data.getRunningDuration());
+                durationsWalking.add(data.getWalkingDuration());
+            }
 
-        });
-
+        }
 
         return new DataResponse<String, Long>(dates, durationsRunning, durationsWalking, series);
 
@@ -142,7 +148,20 @@ public class DurationHandler {
 
     }
 
-    private static List<Month> getMonthsBetween(LocalDate startDate, LocalDate endDate) {
+    private List<LocalDate> getDaysBetween(LocalDate startDate, LocalDate endDate) {
+
+        if(startDate.isEqual(endDate)) {
+
+            List<LocalDate> result = new LinkedList<>();
+            result.add(startDate);
+
+            return result;
+        }
+
+        return startDate.datesUntil(endDate).collect(Collectors.toList());
+    }
+
+    private List<Month> getMonthsBetween(LocalDate startDate, LocalDate endDate) {
         List<Month> monthsBetween = new ArrayList<>();
         LocalDate currentMonth = startDate;
 
