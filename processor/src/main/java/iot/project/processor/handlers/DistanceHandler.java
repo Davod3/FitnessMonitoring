@@ -5,6 +5,8 @@ import iot.project.processor.utils.VelocityCalculator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,12 +15,12 @@ import java.util.List;
 public class DistanceHandler {
 
     @Autowired
-    private DataHandler dataHandler;
+    private DurationHandler durationHandler;
 
     public DataResponse<String, Double> fetchDistanceByDay(LocalDate startDate, LocalDate endDate, int age,
                                                            String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByDay(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByDay(startDate, endDate);
 
         return fetchDistance(response, age, gender);
     }
@@ -26,7 +28,7 @@ public class DistanceHandler {
     public DataResponse<String, Double> fetchDistanceByWeek(LocalDate startDate, LocalDate endDate, int age,
                                                             String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByWeek(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByWeek(startDate, endDate);
 
         return fetchDistance(response, age, gender);
     }
@@ -34,7 +36,7 @@ public class DistanceHandler {
     public DataResponse<String, Double> fetchDistanceByMonth(LocalDate startDate, LocalDate endDate, int age,
                                                              String gender) {
 
-        DataResponse<String, Long> response = this.dataHandler.fetchDurationByMonth(startDate, endDate);
+        DataResponse<String, Long> response = this.durationHandler.fetchDurationByMonth(startDate, endDate);
 
         return fetchDistance(response, age, gender);
     }
@@ -43,8 +45,8 @@ public class DistanceHandler {
                                                        String gender) {
 
         List<String> series = new LinkedList<>();
-        series.add("Distance Running (meters)");
-        series.add("Distance Walking (meters)");
+        series.add("Distance Running (Km)");
+        series.add("Distance Walking (Km)");
 
 
         List<Double> distanceWalking = new LinkedList<>();
@@ -55,20 +57,22 @@ public class DistanceHandler {
 
         for(long duration : response.getInformationRunning()) {
 
-            distanceRunning.add(calculateDistanceMeters(velocityRunning, duration));
+            distanceRunning.add(BigDecimal.valueOf(calculateDistanceKM(velocityRunning, duration))
+                    .setScale(2, RoundingMode.HALF_UP).doubleValue());
 
         }
 
         for(long duration : response.getInformationWalking()) {
-            distanceWalking.add(calculateDistanceMeters(velocityWalking, duration));
+            distanceWalking.add(BigDecimal.valueOf(calculateDistanceKM(velocityWalking, duration))
+                    .setScale(2, RoundingMode.HALF_UP).doubleValue());
         }
 
         return new DataResponse<String, Double>(response.getDates(), distanceRunning, distanceWalking, series);
 
     }
 
-    private double calculateDistanceMeters(double velocity, long durationInSeconds) {
-        return velocity * durationInSeconds;
+    private double calculateDistanceKM(double velocity, long durationInSeconds) {
+        return (velocity * durationInSeconds) / 1000;
     }
 
 }

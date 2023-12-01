@@ -369,12 +369,12 @@
         "id": "df924a2577f12739",
         "type": "ui_chart",
         "z": "f6f2187d.f17ca8",
-        "name": "",
+        "name": "Data Display",
         "group": "e34fc22e9331f514",
         "order": 7,
         "width": 16,
         "height": 5,
-        "label": "Data",
+        "label": "{{label}}",
         "chartType": "bar",
         "legend": "true",
         "xformat": "HH:mm:ss",
@@ -403,7 +403,7 @@
         "outputs": 1,
         "useDifferentColor": false,
         "className": "",
-        "x": 1710,
+        "x": 1750,
         "y": 220,
         "wires": [
             []
@@ -425,7 +425,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "duration",
+        "payload": "Duration",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "str",
@@ -453,7 +453,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "distance",
+        "payload": "Distance",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -481,7 +481,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "calories",
+        "payload": "Calories",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -509,7 +509,7 @@
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "activity_level",
+        "payload": "Activity Level",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -646,58 +646,9 @@
         "y": 460,
         "wires": [
             [
-                "ee104bc00a538728"
+                "055818024f605f63"
             ]
         ]
-    },
-    {
-        "id": "5fda28e5e98eb732",
-        "type": "ui_text",
-        "z": "f6f2187d.f17ca8",
-        "group": "d1ab81382855fd4b",
-        "order": 16,
-        "width": 0,
-        "height": 0,
-        "name": "",
-        "label": "Current Activity: ",
-        "format": "Walking",
-        "layout": "row-spread",
-        "className": "",
-        "style": false,
-        "font": "",
-        "fontSize": 16,
-        "color": "#000000",
-        "x": 300,
-        "y": 780,
-        "wires": []
-    },
-    {
-        "id": "0ec93cb818058c99",
-        "type": "ui_gauge",
-        "z": "f6f2187d.f17ca8",
-        "name": "",
-        "group": "d1ab81382855fd4b",
-        "order": 1,
-        "width": 0,
-        "height": 0,
-        "gtype": "gage",
-        "title": "Activity Level",
-        "label": "units",
-        "format": "{{value}}",
-        "min": 0,
-        "max": 10,
-        "colors": [
-            "#00b500",
-            "#e6e600",
-            "#ca3838"
-        ],
-        "seg1": "",
-        "seg2": "",
-        "diff": false,
-        "className": "",
-        "x": 290,
-        "y": 880,
-        "wires": []
     },
     {
         "id": "fc88a607928f1d2c",
@@ -818,7 +769,7 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "CreateRequest",
-        "func": "var dataPeriod = flow.get('period');\nvar end_date = flow.get('end_date');\nvar start_date = flow.get('start_date');\nvar age = global.get('age');\nvar height = global.get('height');\nvar weight = global.get('weight');\nvar gender = global.get('gender');\nvar walkingThreshold = global.get('walkingThreshold');\nvar runningThreshold = global.get('runningThreshold');\n\nvar isValid = true;\n\nif(dataPeriod === undefined) {\n    dataPeriod = 'day';\n}\n\nif(start_date === undefined || end_date === undefined) {\n    isValid = false;\n    return {payload : null};\n}\n\n//Handle start data after end data\n\nif(age === undefined){\n    age = 21;\n}\n\nif(height === undefined){\n    height = 170;\n}\n\nif(weight === undefined){\n    weight = 50;\n}\n\nif(gender === undefined) {\n    gender = 'male';\n}\n\nif(walkingThreshold === undefined) {\n    walkingThreshold = 30;\n}\n\nif(runningThreshold === undefined) {\n    runningThreshold = 10;\n}\n\nvar newMsg = {\n    payload : {\n        dataPeriod : dataPeriod,\n        start_date : start_date,\n        end_date : end_date,\n        age : age,\n        height : height,\n        weight : weight,\n        gender : gender,\n        walking_threshold : walkingThreshold,\n        running_threshold : runningThreshold\n    }\n};\n\n\nreturn newMsg; //newMsg;",
+        "func": "var dataPeriod = flow.get('period');\nvar end_date = flow.get('end_date');\nvar start_date = flow.get('start_date');\nvar age = global.get('age');\nvar height = global.get('height');\nvar weight = global.get('weight');\nvar gender = global.get('gender');\nvar walkingThreshold = global.get('walkingThreshold');\nvar runningThreshold = global.get('runningThreshold');\n\nvar isValid = true;\n\nif(dataPeriod === undefined) {\n    dataPeriod = 'day';\n}\n\nif(start_date === undefined || end_date === undefined) {\n    isValid = false;\n    return {payload : 'Error: Please select start and end dates!'};\n}\n\n\nif( new Date(start_date) > new Date(end_date)) {\n    isValid = false;\n    return {payload : 'Error: Start date must be before End date!'};\n}\n\n\nif(age === undefined){\n    age = 21;\n}\n\nif(height === undefined){\n    height = 170;\n}\n\nif(weight === undefined){\n    weight = 50;\n}\n\nif(gender === undefined) {\n    gender = 'male';\n}\n\nif(walkingThreshold === undefined) {\n    walkingThreshold = 30;\n}\n\nif(runningThreshold === undefined) {\n    runningThreshold = 10;\n}\n\nvar newMsg = {\n    payload : {\n        dataPeriod : dataPeriod,\n        start_date : start_date,\n        end_date : end_date,\n        age : age,\n        height : height,\n        weight : weight,\n        gender : gender,\n        walking_threshold : walkingThreshold,\n        running_threshold : runningThreshold\n    }\n};\n\n\nreturn newMsg; //newMsg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -829,26 +780,10 @@
         "y": 300,
         "wires": [
             [
-                "2f6a671a6a3be3c6"
+                "2f6a671a6a3be3c6",
+                "02f269b9042de777"
             ]
         ]
-    },
-    {
-        "id": "42658e4f0486cbc1",
-        "type": "debug",
-        "z": "f6f2187d.f17ca8",
-        "name": "isNull",
-        "active": false,
-        "tosidebar": true,
-        "console": false,
-        "tostatus": false,
-        "complete": "payload",
-        "targetType": "msg",
-        "statusVal": "",
-        "statusType": "auto",
-        "x": 970,
-        "y": 60,
-        "wires": []
     },
     {
         "id": "2f6a671a6a3be3c6",
@@ -859,10 +794,12 @@
         "propertyType": "msg",
         "rules": [
             {
-                "t": "null"
+                "t": "cont",
+                "v": "Error",
+                "vt": "str"
             },
             {
-                "t": "nnull"
+                "t": "else"
             }
         ],
         "checkall": "false",
@@ -872,7 +809,7 @@
         "y": 300,
         "wires": [
             [
-                "42658e4f0486cbc1"
+                "174623ae06df9223"
             ],
             [
                 "c0bc66eb40920bfe",
@@ -902,7 +839,7 @@
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "Response",
-        "active": true,
+        "active": false,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -910,8 +847,8 @@
         "targetType": "msg",
         "statusVal": "",
         "statusType": "auto",
-        "x": 1720,
-        "y": 300,
+        "x": 1740,
+        "y": 400,
         "wires": []
     },
     {
@@ -919,15 +856,15 @@
         "type": "function",
         "z": "f6f2187d.f17ca8",
         "name": "ParseResponse",
-        "func": "var newMsg = {payload : [msg.payload]};\n\nreturn newMsg;",
+        "func": "var dataType = flow.get('dataType');\nvar period = flow.get('period');\nvar startDate = String(flow.get('start_date')).split('T')[0];\nvar endDate = String(flow.get('end_date')).split('T')[0];\n\nvar label = String(dataType) + \" per \" + String(period) + \": \" + startDate + \" -- \" + endDate;\n\nvar newMsg = {payload : [msg.payload], label : label};\n\nreturn newMsg;",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
         "initialize": "",
         "finalize": "",
         "libs": [],
-        "x": 1500,
-        "y": 300,
+        "x": 1540,
+        "y": 320,
         "wires": [
             [
                 "24a77358085c8c36",
@@ -948,22 +885,22 @@
             },
             {
                 "t": "eq",
-                "v": "duration",
+                "v": "Duration",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "calories",
+                "v": "Calories",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "distance",
+                "v": "Distance",
                 "vt": "str"
             },
             {
                 "t": "eq",
-                "v": "activity_level",
+                "v": "Activity Level",
                 "vt": "str"
             }
         ],
@@ -1059,6 +996,110 @@
         "wires": [
             [
                 "20e2124887c2d9ae"
+            ]
+        ]
+    },
+    {
+        "id": "174623ae06df9223",
+        "type": "ui_toast",
+        "z": "f6f2187d.f17ca8",
+        "position": "top right",
+        "displayTime": "3",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": false,
+        "className": "",
+        "topic": "",
+        "name": "",
+        "x": 1070,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "5fda28e5e98eb732",
+        "type": "ui_text",
+        "z": "f6f2187d.f17ca8",
+        "group": "d1ab81382855fd4b",
+        "order": 16,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Current Activity: ",
+        "format": "Walking",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 300,
+        "y": 780,
+        "wires": []
+    },
+    {
+        "id": "0ec93cb818058c99",
+        "type": "ui_gauge",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "group": "d1ab81382855fd4b",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "gtype": "gage",
+        "title": "Activity Level",
+        "label": "units",
+        "format": "{{value}}",
+        "min": 0,
+        "max": 10,
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "seg1": "",
+        "seg2": "",
+        "diff": false,
+        "className": "",
+        "x": 290,
+        "y": 880,
+        "wires": []
+    },
+    {
+        "id": "02f269b9042de777",
+        "type": "debug",
+        "z": "f6f2187d.f17ca8",
+        "name": "debug 1",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 800,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "055818024f605f63",
+        "type": "function",
+        "z": "f6f2187d.f17ca8",
+        "name": "ParseDates",
+        "func": "var start = new Date(msg.payload.start_date);\nvar end = new Date(msg.payload.end_date);\n\nvar summer_time = new Date();\nsummer_time.setFullYear(start.getFullYear());\nsummer_time.setMonth(9);\nsummer_time.setDate(29);\n\nif (start < summer_time) {\n    start.setDate(start.getDate() + 1);\n}\n\nif (end < summer_time) {\n    end.setDate(end.getDate() + 1);\n}\n\nvar newMsg = {payload : {\n    start_date : start.toISOString(),\n    end_date : end.toISOString()\n}}\n\nreturn newMsg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 230,
+        "y": 460,
+        "wires": [
+            [
+                "ee104bc00a538728"
             ]
         ]
     },
