@@ -17,10 +17,23 @@ import java.util.Map;
 public class DataController {
 
     @Autowired private DataService dataService;
-
-    @PostMapping("/data")
-    public DataResponseDTO fetchData(@RequestBody DataRequestDTO request) {
-        return dataService.fetchData(request);
+    @PostMapping("/duration")
+    public DataResponseDTO fetchDuration(@RequestBody DataRequestDTO request) {
+        return dataService.fetchDuration(request);
     }
 
+    @PostMapping("/calories")
+    public DataResponseDTO fetchCalories(@RequestBody DataRequestDTO request) {
+        return dataService.fetchCalories(request);
+    }
+
+    @PostMapping("/distance")
+    public DataResponseDTO fetchDistance(@RequestBody DataRequestDTO request) {
+        return dataService.fetchDistance(request);
+    }
+
+    @PostMapping("/activitylevel")
+    public DataResponseDTO fetchActivityLevel(@RequestBody DataRequestDTO request) {
+        return dataService.fetchActivityLevel(request);
+    }
 }

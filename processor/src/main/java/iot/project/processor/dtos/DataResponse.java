@@ -8,12 +8,14 @@ public class DataResponse<T, O> {
    private List<T> dates;
    private List<O> informationWalking;
    private List<O> informationRunning;
+   private List<String> series;
 
-    public DataResponse(List<T> dates, List<O> informationRunning, List<O> informationWalking) {
+    public DataResponse(List<T> dates, List<O> informationRunning, List<O> informationWalking, List<String> series) {
 
         this.dates = dates;
         this.informationWalking = informationWalking;
         this.informationRunning = informationRunning;
+        this.series = series;
 
     }
 
@@ -27,5 +29,9 @@ public class DataResponse<T, O> {
 
     public List<O> getInformationRunning() {
         return informationRunning;
+    }
+
+    public List<String> getSeries() {
+        return series;
     }
 }
