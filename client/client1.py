@@ -28,17 +28,16 @@ datafile = open("client/online.data", "r")
 
 lines = datafile.readlines()
 
-
-# Get current date and time
-curr = datetime.datetime.now()
-
-curr_date = curr.strftime("%d/%m/%y")
-curr_time = curr.strftime("%H:%M:%S:%f")
-
-
 # for each line, separate by ';' and put all lines in msg
 for line in lines[1:]:
-    fields = line.split(';')
+
+    # Get current date and time
+    curr = datetime.datetime.now()
+
+    curr_date = curr.strftime("%d/%m/%y")
+    curr_time = curr.strftime("%H-%M-%S-%f")
+
+    fields = line.strip().split(';')
     msg.append({
         "date":curr_date,
         "time":curr_time,

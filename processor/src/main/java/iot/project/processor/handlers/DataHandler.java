@@ -2,8 +2,6 @@ package iot.project.processor.handlers;
 
 import iot.project.processor.entities.ProcessedUserData;
 import iot.project.processor.entities.UserData;
-import iot.project.processor.dtos.DataResponse;
-import iot.project.processor.entities.Week;
 import iot.project.processor.repositories.SavedUserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -40,13 +38,13 @@ public class DataHandler {
 
             File file = new File(TRAINING_DATA);
 
-            Files.lines(file.toPath()).forEach(this::addTrainingData);
+            Files.lines(file.toPath()).forEach(this::addData);
 
         }
 
     }
 
-    public void addTrainingData(String line) {
+    public void addData(String line) {
 
         if(!line.contains("date")) {
             //Skip header line
@@ -129,4 +127,5 @@ public class DataHandler {
         return data;
 
     }
+
 }
