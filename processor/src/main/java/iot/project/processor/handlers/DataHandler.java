@@ -4,7 +4,9 @@ import iot.project.processor.entities.ProcessedUserData;
 import iot.project.processor.entities.UserData;
 import iot.project.processor.repositories.SavedUserDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
 
 import java.io.File;
@@ -30,7 +32,6 @@ public class DataHandler {
 
     @Autowired
     private SavedUserDataRepository userDataRepo;
-
     @Autowired
     private MongoTemplate mongoTemplate;
 
@@ -195,6 +196,27 @@ public class DataHandler {
         String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
 
         return response;
+
+    }
+
+    public int currentActivity() {
+
+        /*
+            Code based on https://tecadmin.net/mongodb-get-the-last-record-from-collection/
+         */
+
+        Query query = new Query().limit(1).with(Sort.by(Sort.Order.desc("$natural")));
+        UserData data = this.mongoTemplate.findOne(query, UserData.class);
+
+        Long lastTimestamp = data.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond();
+        Long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
+
+        if(now - lastTimestamp > 60) {
+            //Inactivity Threshold
+            return -1;
+        }
+
+        return data.getActivity();
 
     }
 }

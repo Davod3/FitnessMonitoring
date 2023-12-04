@@ -4,6 +4,7 @@ import iot.project.processor.dtos.DataRequestDTO;
 import iot.project.processor.dtos.DataResponseDTO;
 import iot.project.processor.services.DataService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,5 +36,10 @@ public class DataController {
     @PostMapping("/activitylevel")
     public DataResponseDTO fetchActivityLevel(@RequestBody DataRequestDTO request) {
         return dataService.fetchActivityLevel(request);
+    }
+
+    @GetMapping("/activitytype")
+    public int fetchCurrentActivity() {
+        return dataService.fetchCurrentActivity();
     }
 }

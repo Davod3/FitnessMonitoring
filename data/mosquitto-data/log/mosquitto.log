@@ -1004,3 +1004,36 @@
 1701712673: Client processor disconnected.
 1701712679: mosquitto version 2.0.18 terminating
 1701712679: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1701712739: mosquitto version 2.0.18 starting
+1701712739: Config loaded from /mosquitto/config/mosquitto.conf.
+1701712739: Opening ipv4 listen socket on port 1883.
+1701712739: mosquitto version 2.0.18 running
+1701712747: New connection from 172.100.10.14:37550 on port 1883.
+1701712747: New client connected from 172.100.10.14:37550 as processor (p2, c1, k60).
+1701712779: New connection from 172.100.10.1:39718 on port 1883.
+1701712779: New client connected from 172.100.10.1:39718 as Client1 (p2, c1, k60).
+1701713014: Client Client1 closed its connection.
+1701713039: Client processor disconnected.
+1701713045: mosquitto version 2.0.18 terminating
+1701713045: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1701714189: mosquitto version 2.0.18 starting
+1701714189: Config loaded from /mosquitto/config/mosquitto.conf.
+1701714189: Opening ipv4 listen socket on port 1883.
+1701714189: mosquitto version 2.0.18 running
+1701714196: New connection from 172.100.10.14:51274 on port 1883.
+1701714197: New client connected from 172.100.10.14:51274 as processor (p2, c1, k60).
+1701714359: Client processor disconnected.
+1701714368: mosquitto version 2.0.18 terminating
+1701714368: Saving in-memory database to /mosquitto/data//mosquitto.db.
+1701714452: mosquitto version 2.0.18 starting
+1701714452: Config loaded from /mosquitto/config/mosquitto.conf.
+1701714452: Opening ipv4 listen socket on port 1883.
+1701714452: mosquitto version 2.0.18 running
+1701714467: New connection from 172.100.10.14:52784 on port 1883.
+1701714467: New client connected from 172.100.10.14:52784 as processor (p2, c1, k60).
+1701714630: New connection from 172.100.10.1:42962 on port 1883.
+1701714630: New client connected from 172.100.10.1:42962 as Client1 (p2, c1, k60).
+1701714647: Client Client1 closed its connection.
+1701714757: Client processor disconnected.
+1701714762: mosquitto version 2.0.18 terminating
+1701714762: Saving in-memory database to /mosquitto/data//mosquitto.db.
