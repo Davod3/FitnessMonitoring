@@ -1,6 +1,8 @@
 package iot.project.processor.entities;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.IndexDirection;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDateTime;
@@ -10,6 +12,7 @@ public class UserData {
 
     @Id
     private String id;
+    @Indexed(direction = IndexDirection.ASCENDING)
     private LocalDateTime dateTime;
     private int activity;
     private double accelerationX;

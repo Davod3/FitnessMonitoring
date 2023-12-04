@@ -29,6 +29,7 @@ public class DataHandler {
     private static final String USER_DATA = "processed_user_data";
     private static final String RAW_USER_DATA = "raw_user_data";
     private static final String CLASSIFIER_API = "http://172.100.10.17:3000/predict";
+    private static final int INACTIVITY_THRESHOLD = 60;
 
     @Autowired
     private SavedUserDataRepository userDataRepo;
@@ -37,27 +38,34 @@ public class DataHandler {
 
     public void initializeTrainingDataset() throws IOException {
 
+        System.out.println("Loading training data...");
 
         //Check if training data is initialized
-
         if(!mongoTemplate.collectionExists(USER_DATA)) {
 
             File file = new File(TRAINING_DATA);
 
-            Files.lines(file.toPath()).forEach(this::addData);
+            Files.lines(file.toPath()).forEach(this::addTrainingData);
 
+            System.out.println("Pre-Processing training data...");
+
+            Sort order = Sort.by(Sort.Direction.ASC, "dateTime");
+            Query query = new Query().with(order);
+
+            this.mongoTemplate.find(query, UserData.class).stream().forEach(this::computeAndSave);
         }
+
+        System.out.println("Training data loaded!");
 
     }
 
-    public void addData(String line) {
+    public void addTrainingData(String line) {
 
         if(!line.contains("date")) {
             //Skip header line
             try {
                 UserData data = dataParser(line);
                 this.mongoTemplate.save(data, RAW_USER_DATA);
-                computeAndSave(data);
             } catch (ParseException e) {
                 throw new RuntimeException(e);
             }
@@ -65,6 +73,9 @@ public class DataHandler {
 
         }
 
+    }
+
+    private void addOnlineData(String cleanData) {
     }
 
     private void computeAndSave(UserData data) {
@@ -79,17 +90,22 @@ public class DataHandler {
 
             savedData.setLastTimestamp(newTimestamp);
 
-            if(data.getActivity() == 0) {
+            //Check for inactivity
+            if(activityDuration < INACTIVITY_THRESHOLD) {
 
-                //Walking
-                long oldWalkingDuration = savedData.getWalkingDuration();
-                savedData.setWalkingDuration(oldWalkingDuration + activityDuration);
+                if(data.getActivity() == 0) {
 
-            } else {
+                    //Walking
+                    long oldWalkingDuration = savedData.getWalkingDuration();
+                    savedData.setWalkingDuration(oldWalkingDuration + activityDuration);
 
-                //Running
-                long oldRunningDuration = savedData.getRunningDuration();
-                savedData.setRunningDuration(oldRunningDuration + activityDuration);
+                } else {
+
+                    //Running
+                    long oldRunningDuration = savedData.getRunningDuration();
+                    savedData.setRunningDuration(oldRunningDuration + activityDuration);
+                }
+
             }
 
 
@@ -142,7 +158,7 @@ public class DataHandler {
 
             String cleanData = cleanData(classifiedData);
 
-            addData(cleanData);
+            addOnlineData(cleanData);
 
 
 
@@ -211,7 +227,7 @@ public class DataHandler {
         Long lastTimestamp = data.getDateTime().atZone(ZoneId.systemDefault()).toEpochSecond();
         Long now = LocalDateTime.now().atZone(ZoneId.systemDefault()).toEpochSecond();
 
-        if(now - lastTimestamp > 60) {
+        if(now - lastTimestamp > INACTIVITY_THRESHOLD) {
             //Inactivity Threshold
             return -1;
         }
