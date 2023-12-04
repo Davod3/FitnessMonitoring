@@ -1791,19 +1791,19 @@
         "id": "4f8bc132e3182be8",
         "type": "ui_button",
         "z": "f720170e2cc34d11",
-        "name": "Day",
+        "name": "Month",
         "group": "d1ab81382855fd4b",
         "order": 42,
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Day",
+        "label": "Month",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "day",
+        "payload": "month",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -1819,19 +1819,19 @@
         "id": "5b6165eed489f34c",
         "type": "ui_button",
         "z": "f720170e2cc34d11",
-        "name": "Week",
+        "name": "Day",
         "group": "d1ab81382855fd4b",
         "order": 38,
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Week",
+        "label": "Day",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "week",
+        "payload": "day",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -1847,19 +1847,19 @@
         "id": "d6d5bb726e09150b",
         "type": "ui_button",
         "z": "f720170e2cc34d11",
-        "name": "Month",
+        "name": "Week",
         "group": "d1ab81382855fd4b",
         "order": 40,
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Month",
+        "label": "Week",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "month",
+        "payload": "week",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -1943,7 +1943,7 @@
         "width": 5,
         "height": 1,
         "name": "Distance Running",
-        "label": "Distance Running (m): ",
+        "label": "Distance Running (Km): ",
         "format": "{{msg.payload}}",
         "layout": "row-spread",
         "className": "",
@@ -1964,7 +1964,7 @@
         "width": 5,
         "height": 1,
         "name": "Distance Walking",
-        "label": "Distance Walking (m): ",
+        "label": "Distance Walking (Km): ",
         "format": "{{msg.payload}}",
         "layout": "row-spread",
         "className": "",
@@ -2228,6 +2228,16 @@
         "fontSize": 16,
         "color": "#000000",
         "x": 510,
+        "y": 260,
+        "wires": []
+    },
+    {
+        "id": "550f6f66a7c2d074",
+        "type": "comment",
+        "z": "f720170e2cc34d11",
+        "name": "Magic Block",
+        "info": "This empty text block exists so \nthat the page has one more unit of height.",
+        "x": 390,
         "y": 260,
         "wires": []
     },
@@ -2686,6 +2696,180 @@
         "wires": [
             [
                 "a429839a2a8831c4"
+            ]
+        ]
+    },
+    {
+        "id": "a9c8c887391f8b29",
+        "type": "inject",
+        "z": "bbe70953285e276c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "21",
+        "payloadType": "str",
+        "x": 310,
+        "y": 60,
+        "wires": [
+            [
+                "4e707313783b208c"
+            ]
+        ]
+    },
+    {
+        "id": "ca61a8285bc90b30",
+        "type": "inject",
+        "z": "bbe70953285e276c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "70",
+        "payloadType": "str",
+        "x": 330,
+        "y": 200,
+        "wires": [
+            [
+                "28505c38d0f5cd49"
+            ]
+        ]
+    },
+    {
+        "id": "121827f276556edf",
+        "type": "inject",
+        "z": "bbe70953285e276c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "170",
+        "payloadType": "str",
+        "x": 330,
+        "y": 340,
+        "wires": [
+            [
+                "58d39a571356d9c3"
+            ]
+        ]
+    },
+    {
+        "id": "d35eb7c2ec864d48",
+        "type": "inject",
+        "z": "bbe70953285e276c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "Male",
+        "payloadType": "str",
+        "x": 330,
+        "y": 480,
+        "wires": [
+            [
+                "44449b3cecd3031c"
+            ]
+        ]
+    },
+    {
+        "id": "470c745c0785844a",
+        "type": "inject",
+        "z": "bbe70953285e276c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "30",
+        "payloadType": "str",
+        "x": 430,
+        "y": 580,
+        "wires": [
+            [
+                "374cf2cae478d0cb"
+            ]
+        ]
+    },
+    {
+        "id": "f8a371f39f47922f",
+        "type": "inject",
+        "z": "bbe70953285e276c",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "10",
+        "payloadType": "str",
+        "x": 430,
+        "y": 680,
+        "wires": [
+            [
+                "82f5970583f860fb"
             ]
         ]
     }
