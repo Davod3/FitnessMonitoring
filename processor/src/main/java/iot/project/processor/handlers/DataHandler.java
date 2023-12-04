@@ -76,6 +76,15 @@ public class DataHandler {
     }
 
     private void addOnlineData(String cleanData) {
+
+        try {
+            UserData data = dataParser(cleanData);
+            this.mongoTemplate.save(data, RAW_USER_DATA);
+            computeAndSave(data);
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     private void computeAndSave(UserData data) {

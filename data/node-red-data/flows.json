@@ -1479,7 +1479,7 @@
         "height": 1,
         "name": "Current Activity",
         "label": "Current Activity:",
-        "format": "Stopped",
+        "format": "{{msg.payload}}",
         "layout": "row-spread",
         "className": "",
         "style": true,
@@ -1591,7 +1591,7 @@
         "type": "http request",
         "z": "f720170e2cc34d11",
         "name": "fetchActivityType",
-        "method": "POST",
+        "method": "GET",
         "ret": "txt",
         "paytoqs": "ignore",
         "url": "http://172.100.10.14:8080/activitytype",
@@ -1606,7 +1606,8 @@
         "y": 680,
         "wires": [
             [
-                "0e225c233d0cbec9"
+                "0e225c233d0cbec9",
+                "843720c36f2856a9"
             ]
         ]
     },
@@ -1615,7 +1616,7 @@
         "type": "function",
         "z": "f720170e2cc34d11",
         "name": "parseActivityType",
-        "func": "\nreturn msg;",
+        "func": "var activityType = msg.payload;\nvar activity;\n\n\nif(activityType === \"0\" ) {\n    activity = \"Walking\";\n} else if (activityType === \"1\") {\n    activity = \"Running\";\n} else {\n    activity = \"Stopped\";\n}\n\nreturn {payload : activity};",
         "outputs": 1,
         "timeout": 0,
         "noerr": 0,
@@ -1789,7 +1790,8 @@
         "y": 480,
         "wires": [
             [
-                "af6c31310e7e3dd5"
+                "af6c31310e7e3dd5",
+                "f64668cea2547058"
             ]
         ]
     },
@@ -2199,6 +2201,22 @@
                 "f334addffa82e3af"
             ]
         ]
+    },
+    {
+        "id": "843720c36f2856a9",
+        "type": "debug",
+        "z": "f720170e2cc34d11",
+        "name": "debug 3",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 870,
+        "y": 760,
+        "wires": []
     },
     {
         "id": "fb6c935414224f8a",
