@@ -9,6 +9,10 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.nio.file.Files;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -22,6 +26,7 @@ public class DataHandler {
     private static final String TRAINING_DATA = "training.data";
     private static final String USER_DATA = "processed_user_data";
     private static final String RAW_USER_DATA = "raw_user_data";
+    private static final String CLASSIFIER_API = "http://172.100.10.17:3000/predict";
 
     @Autowired
     private SavedUserDataRepository userDataRepo;
@@ -128,4 +133,68 @@ public class DataHandler {
 
     }
 
+    public void handleIncomingData(String receivedMessage) {
+
+        try {
+
+            String classifiedData = classify(receivedMessage);
+
+            String cleanData = cleanData(classifiedData);
+
+            addData(cleanData);
+
+
+
+        } catch (IOException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+    private String cleanData(String classifiedData) {
+
+        StringBuilder sb = new StringBuilder();
+
+        String firstClean = classifiedData.replace("{", "");
+        String secondClean = firstClean.replace("}", "");
+        String thirdClean = secondClean.replace(" ", "");
+        String fourthClean = thirdClean.replace("\"", "");
+
+        String[] fields = fourthClean.split(",");
+
+        for(String field : fields) {
+
+            String[] splitField = field.split(":");
+
+            if(splitField[0].contains("time")) {
+                String time = splitField[1].replace("-", ":");
+                sb.append(time).append(";");
+            } else {
+
+                sb.append(splitField[1]).append(";");
+
+            }
+
+        }
+
+        return sb.toString();
+
+    }
+
+    private String classify(String receivedMessage) throws IOException, InterruptedException {
+
+        HttpClient client = HttpClient.newHttpClient();
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(CLASSIFIER_API))
+                .POST(HttpRequest.BodyPublishers.ofString(receivedMessage))
+                .header("Content-Type", "application/json")
+                .build();
+
+        String response = client.send(request, HttpResponse.BodyHandlers.ofString()).body();
+
+        return response;
+
+    }
 }

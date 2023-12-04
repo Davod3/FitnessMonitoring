@@ -26,28 +26,7 @@ public class MessageHandler implements org.springframework.messaging.MessageHand
 
         String receivedMessage = message.getPayload().toString();
 
-        String cleanMessage = cleanMessage(receivedMessage);
-
-
-        /*
-
-        try {
-            UserData data = parseData(receivedMessage);
-
-
-        } catch (ParseException e) {
-            System.out.println("Failed to parse received data!");
-        }
-
-         */
-
-    }
-
-    private String cleanMessage(String receivedMessage) {
-
-        System.out.println(receivedMessage);
-
-        return null;
+        this.dataHandler.handleIncomingData(receivedMessage);
 
     }
 
