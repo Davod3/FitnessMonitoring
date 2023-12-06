@@ -59,6 +59,20 @@ services:
           idc-net:
               ipv4_address: 172.100.10.14
   
+  # Machine Learning Processor Service
+  ml-processor:
+    build:
+      context: ./ml-processor
+      dockerfile: Dockerfile
+    container_name: ml-processor
+    expose:
+      - 3000
+    ports:
+      - "3000:3000"
+    networks:
+        idc-net:
+            ipv4_address: 172.100.10.17
+              
 #
 # Add more containers
 #

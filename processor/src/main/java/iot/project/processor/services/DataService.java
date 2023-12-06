@@ -5,8 +5,6 @@ import iot.project.processor.handlers.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.xml.datatype.DatatypeFactory;
-import javax.xml.datatype.Duration;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -22,6 +20,7 @@ public class DataService {
     @Autowired private CaloriesHandler caloriesHandler;
     @Autowired private DistanceHandler distanceHandler;
     @Autowired private ActivityLevelHandler activityHandler;
+    @Autowired private DataHandler dataHandler;
 
     public DataResponseDTO fetchDuration(DataRequestDTO request) {
 
@@ -206,4 +205,7 @@ public class DataService {
 
     }
 
+    public int fetchCurrentActivity() {
+        return this.dataHandler.currentActivity();
+    }
 }
