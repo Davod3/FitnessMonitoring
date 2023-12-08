@@ -134,7 +134,7 @@ public class DurationHandler {
                 totalWalking+=l;
             }
 
-            dates.add(m.toString());
+            dates.add(m.toString() + " " + yearMonth.getYear());
 
             durationRunning.add(totalRunning);
 

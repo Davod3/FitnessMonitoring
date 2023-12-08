@@ -1159,7 +1159,7 @@
         "type": "debug",
         "z": "f6f2187d.f17ca8",
         "name": "Response",
-        "active": false,
+        "active": true,
         "tosidebar": true,
         "console": false,
         "tostatus": false,
@@ -1390,6 +1390,114 @@
         "x": 480,
         "y": 520,
         "wires": []
+    },
+    {
+        "id": "9bbc4a9f420be7fd",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "InitDataType",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "duration",
+        "payloadType": "str",
+        "x": 370,
+        "y": 40,
+        "wires": [
+            [
+                "902f3f11c4d039e7"
+            ]
+        ]
+    },
+    {
+        "id": "902f3f11c4d039e7",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "dataType",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 550,
+        "y": 40,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "45b422b6144814d5",
+        "type": "change",
+        "z": "f6f2187d.f17ca8",
+        "name": "",
+        "rules": [
+            {
+                "t": "set",
+                "p": "period",
+                "pt": "flow",
+                "to": "payload",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "7a4b332df30a2d84",
+        "type": "inject",
+        "z": "f6f2187d.f17ca8",
+        "name": "InitPeriod",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": true,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "day",
+        "payloadType": "str",
+        "x": 360,
+        "y": 100,
+        "wires": [
+            [
+                "45b422b6144814d5"
+            ]
+        ]
     },
     {
         "id": "6b98949027b6f52a",
@@ -1791,19 +1899,19 @@
         "id": "4f8bc132e3182be8",
         "type": "ui_button",
         "z": "f720170e2cc34d11",
-        "name": "Day",
+        "name": "Month",
         "group": "d1ab81382855fd4b",
         "order": 42,
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Day",
+        "label": "Month",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "day",
+        "payload": "month",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -1819,19 +1927,19 @@
         "id": "5b6165eed489f34c",
         "type": "ui_button",
         "z": "f720170e2cc34d11",
-        "name": "Week",
+        "name": "Day",
         "group": "d1ab81382855fd4b",
         "order": 38,
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Week",
+        "label": "Day",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "week",
+        "payload": "day",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",
@@ -1847,19 +1955,19 @@
         "id": "d6d5bb726e09150b",
         "type": "ui_button",
         "z": "f720170e2cc34d11",
-        "name": "Month",
+        "name": "Week",
         "group": "d1ab81382855fd4b",
         "order": 40,
         "width": 3,
         "height": 1,
         "passthru": false,
-        "label": "Month",
+        "label": "Week",
         "tooltip": "",
         "color": "",
         "bgcolor": "",
         "className": "",
         "icon": "",
-        "payload": "month",
+        "payload": "week",
         "payloadType": "str",
         "topic": "topic",
         "topicType": "msg",

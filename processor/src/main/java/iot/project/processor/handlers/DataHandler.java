@@ -31,6 +31,8 @@ public class DataHandler {
     private static final String CLASSIFIER_API = "http://172.100.10.17:3000/predict";
     private static final int INACTIVITY_THRESHOLD = 60;
 
+    private boolean isInitialized = false;
+
     @Autowired
     private SavedUserDataRepository userDataRepo;
     @Autowired
@@ -53,13 +55,15 @@ public class DataHandler {
             Query query = new Query().with(order);
 
             this.mongoTemplate.find(query, UserData.class).stream().forEach(this::computeAndSave);
+
+            this.isInitialized = true;
         }
 
         System.out.println("Training data loaded!");
 
     }
 
-    public void addTrainingData(String line) {
+    private void addTrainingData(String line) {
 
         if(!line.contains("date")) {
             //Skip header line
@@ -160,6 +164,10 @@ public class DataHandler {
     }
 
     public void handleIncomingData(String receivedMessage) {
+
+        if(!isInitialized){
+            return;
+        }
 
         try {
 
