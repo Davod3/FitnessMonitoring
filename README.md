@@ -27,3 +27,11 @@ localhost:1880/ui
 
 If you encounter any issues while running the 'run.sh' script,
 ensure that Docker is installed and running properly on your system.
+
+To provide some sample data to the system you can run the provided client.
+To do so, please execute the following commands starting in the project root 
+directory:
+
+´cd client´
+´pip install -r requirements.txt´
+´python client1.py´
