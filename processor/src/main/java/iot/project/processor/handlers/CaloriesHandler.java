@@ -50,8 +50,8 @@ public class CaloriesHandler {
                                                                  double height, double weight, String gender) {
 
         List<String> series = new LinkedList<>();
-        series.add("Calories Burned Running (Kcal)");
-        series.add("Calories Burned Walking (Kcal)");
+        series.add("Calories Burned Running (cal)");
+        series.add("Calories Burned Walking (cal)");
 
         List<Double> caloriesWalking = new LinkedList<>();
         List<Double> caloriesRunning = new LinkedList<>();
