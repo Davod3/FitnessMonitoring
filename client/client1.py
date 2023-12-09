@@ -22,7 +22,7 @@ client.loop_start()
 
 
 # Read data
-datafile = open("client/online.data", "r")
+datafile = open("online.data", "r")
 
 # Get lines
 lines = datafile.readlines()
